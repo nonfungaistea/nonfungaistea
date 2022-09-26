@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "31447140293",
+    "project_id": "nonfungaistea",
+    "storage_bucket": "nonfungaistea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31447140293:android:1fac195190377e93ef6dac",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31447140293-jchcpv50h87v1jd6sfc70r4gdlh3ssjs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkqQF6q4z9FiqhiX47kotHiJIqPDei4W4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31447140293-jchcpv50h87v1jd6sfc70r4gdlh3ssjs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
