@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClick() {
         binding.register.setOnClickListener(){
-            setContentView(R.layout.activity_register)
+            this.startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
