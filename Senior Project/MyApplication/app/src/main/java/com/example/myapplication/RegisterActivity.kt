@@ -33,8 +33,6 @@ class RegisterActivity : AppCompatActivity() {
         binding.registUser.setOnClickListener(){
             registerUser()
         }
-
-
     }
 
     private fun registerUser() {
@@ -54,19 +52,19 @@ class RegisterActivity : AppCompatActivity() {
             return
         }
 
-        if(!(Patterns.EMAIL_ADDRESS.matcher(email).matches())){
+        if (!(Patterns.EMAIL_ADDRESS.matcher(email).matches())){
             binding.email.error = "Please provide valid email"
             binding.email.requestFocus()
             return
         }
 
-        if(password.isEmpty()){
+        if (password.isEmpty()){
             binding.password.error = "Password is required"
             binding.password.requestFocus()
             return
         }
 
-        if(password.length < 6){
+        if (password.length < 6){
             binding.password.error = "Minimum password length should be 6"
             binding.password.requestFocus()
             return
