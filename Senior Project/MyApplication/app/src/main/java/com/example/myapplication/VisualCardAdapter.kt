@@ -34,8 +34,8 @@ class VisualCardAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val cardWidth = parent.width / boardSize.getWidth() - (2 * MARGIN_SIZE)
-        val cardHeight = parent.height / boardSize.getHeight() - (2 * MARGIN_SIZE)
+        val cardWidth = parent.width / boardSize.getWidth()
+        val cardHeight = parent.height / boardSize.getHeight()
         val cardSideLength = min(cardWidth,cardHeight)
         //inflate is the view
         val view = LayoutInflater.from(context).inflate(R.layout.visual_card, parent, false)
