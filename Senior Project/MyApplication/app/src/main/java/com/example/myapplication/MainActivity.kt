@@ -31,6 +31,17 @@ class MainActivity : AppCompatActivity() {
         binding.buttonLogin.setOnClickListener{
             userLogin()
         }
+
+        binding.forgotPassword.setOnClickListener{
+            this.startActivity(Intent(this, ForgotPasswordActivity::class.java))
+
+        }
+
+
+    }
+
+    private fun resetPassword() {
+        TODO("Not yet implemented")
     }
 
     private fun userLogin() {
