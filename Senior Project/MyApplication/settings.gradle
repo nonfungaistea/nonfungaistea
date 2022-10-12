@@ -14,6 +14,7 @@ dependencyResolutionManagement {
         maven {url = "https://artifactory.img.ly/artifactory/imgly"}
 
 
+
     }
 }
 rootProject.name = "My Application"

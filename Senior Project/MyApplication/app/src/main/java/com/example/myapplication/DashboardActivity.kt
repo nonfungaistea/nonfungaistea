@@ -6,13 +6,28 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
-import androidx.preference.PreferenceManager
+import android.widget.SeekBar
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.myapplication.databinding.ActivityDashboardBinding
 
 
 class DashboardActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDashboardBinding
+    //Filters.xml
+    private lateinit var filterBtnsLayout: ConstraintLayout
+    private lateinit var filterBackBtn: TextView
+    //Brightness.xml
+    private lateinit var brightnessSeekbarLayout: ConstraintLayout
+    private lateinit var brightnessSeekbarOkView: TextView
+    private lateinit var brightnessSeekBar: SeekBar
+    //Contrast.xml
+    private lateinit var contrastSeekBarLayout: ConstraintLayout
+    private lateinit var contrastSeekbarOkView: TextView
+    private lateinit var contrastSeekBar: SeekBar
+
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,22 +38,57 @@ class DashboardActivity : AppCompatActivity() {
         onClick()
     }
 
+
+
     private fun onClick() {
-        binding.collageBtn.setOnClickListener{
+
+        binding.rotateBtn.setOnClickListener{
             //binding.toolsLayout.visibility = View.GONE
 
         }
-        binding.filterBtn.setOnClickListener {
-            //binding.toolsLayout.visibility = View.GONE
+
+        //Filters
+        filterBackBtn = findViewById(R.id.filterBackBtn)
+        filterBtnsLayout = findViewById(R.id.filterBtnsLayout)
+        binding.filterBtn.setOnClickListener{
+            filterBtnsLayout.visibility = View.VISIBLE
+            binding.toolsLayout.visibility = View.GONE
         }
+        filterBackBtn.setOnClickListener {
+            filterBtnsLayout.visibility = View.GONE
+            binding.toolsLayout.visibility = View.VISIBLE
+        }
+
+        //Brightness
+        brightnessSeekBar = findViewById(R.id.brightnessSeekBar)
+        brightnessSeekbarLayout = findViewById(R.id.brightnessSeekBarLayout)
+        brightnessSeekbarOkView = findViewById(R.id.brightnessSeekBarOkView)
         binding.brightnessBtn.setOnClickListener {
-            //binding.toolsLayout.visibility = View.GONE
+            brightnessSeekbarLayout.visibility = View.VISIBLE
+            binding.toolsLayout.visibility = View.GONE
 
         }
+        brightnessSeekbarOkView.setOnClickListener {
+            brightnessSeekbarLayout.visibility = View.GONE
+            binding.toolsLayout.visibility = View.VISIBLE
+        }
+        //----------------------
+
+        //Contrast
+        contrastSeekBar = findViewById(R.id.contrastSeekBar)
+        contrastSeekBarLayout = findViewById(R.id.contrastSeekBarLayout)
+        contrastSeekbarOkView = findViewById(R.id.contrastSeekBarOkView)
         binding.contrastBtn.setOnClickListener {
-            //binding.toolsLayout.visibility = View.GONE
-
+            contrastSeekBarLayout.visibility = View.VISIBLE
+            binding.toolsLayout.visibility = View.GONE
         }
+        contrastSeekbarOkView.setOnClickListener {
+            contrastSeekBarLayout.visibility = View.GONE
+            binding.toolsLayout.visibility = View.VISIBLE
+        }
+        //----------------------
+
+
         binding.addTextBtn.setOnClickListener {
             //binding.toolsLayout.visibility = View.GONE
 
@@ -51,7 +101,6 @@ class DashboardActivity : AppCompatActivity() {
             //binding.toolsLayout.visibility = View.GONE
 
         }
-
 
     }
 
