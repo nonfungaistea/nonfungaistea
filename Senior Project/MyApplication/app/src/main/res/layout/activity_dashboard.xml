@@ -4,28 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clipToPadding="false"
     tools:context=".DashboardActivity">
 
-    <TextView
-        android:id="@+id/userName"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="100dp"
-        android:text="Hey Dennis!"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="31dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvBoard"
-        android:layout_width="409dp"
-        android:layout_height="668dp"
-        android:layout_marginTop="2dp"
+    <com.google.android.material.navigationrail.NavigationRailView
+        android:id="@+id/navigationRail"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        app:headerLayout="@layout/navigation_rail_fab"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/userName" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/navigation_rail_menu" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
