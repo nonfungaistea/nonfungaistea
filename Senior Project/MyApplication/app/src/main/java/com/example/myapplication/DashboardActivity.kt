@@ -23,6 +23,7 @@ class DashboardActivity() : AppCompatActivity()  {
         val navRailFab: FloatingActionButton = findViewById(R.id.nav_rail_fab)
         navRailFab.setOnClickListener {
             Toast.makeText(this, "FAB Clicked!", Toast.LENGTH_SHORT).show()
+            this.startActivity(Intent(this, GetPicture::class.java))
         }
         val navigationRail: NavigationRailView = findViewById(R.id.navigationRail)
         navigationRail.setOnItemSelectedListener { menuItem ->
