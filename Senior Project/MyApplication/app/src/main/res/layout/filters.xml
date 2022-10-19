@@ -39,7 +39,7 @@
                 app:cardCornerRadius="@dimen/sm">
 
                 <ImageView
-                    android:id="@+id/fiter0"
+                    android:id="@+id/filter0"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/default_bg"
@@ -57,7 +57,7 @@
                 app:cardCornerRadius="@dimen/sm">
 
                 <ImageView
-                    android:id="@+id/fiter1"
+                    android:id="@+id/greyBtn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/default_bg"

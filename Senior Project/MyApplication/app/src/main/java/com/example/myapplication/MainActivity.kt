@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener{
             if (it.isSuccessful){
-                this.startActivity(Intent(this, DashboardActivity::class.java))
+                this.startActivity(Intent(this, Artwork::class.java))
             }else{
                 Toast.makeText(this, "Failed to login. Verify credentials.", Toast.LENGTH_LONG).show()
             }

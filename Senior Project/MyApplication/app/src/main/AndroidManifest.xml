@@ -18,7 +18,7 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
-            android:parentActivityName=".DashboardActivity"
+            android:parentActivityName=".Artwork"
             android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.app.lib_name"
@@ -27,7 +27,7 @@
         <activity android:name=".ForgotPasswordActivity"
             android:exported="true"/>
         <activity
-            android:name=".DashboardActivity"
+            android:name=".Artwork"
             android:exported="true" />
         <activity
             android:name=".RegisterActivity"
