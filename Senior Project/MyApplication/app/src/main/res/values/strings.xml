@@ -26,6 +26,9 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="password_reset">Reset Password</string>
+    <string name="title_activity_settings">AHHHHH</string>
+    <string name="photofy">Photofy</string>
 
 
 </resources>

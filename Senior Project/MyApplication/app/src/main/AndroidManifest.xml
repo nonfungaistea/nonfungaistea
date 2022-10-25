@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.myapplication">
-
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    tools:ignore="ScopedStorage" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,15 +14,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
+
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
-            android:parentActivityName=".DashboardActivity"
+            android:parentActivityName=".Artwork"
             android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <activity android:name=".ForgotPasswordActivity"
+            android:exported="true"/>
         <activity
             android:name=".DeleteActivity"
             android:exported="false" />
@@ -34,9 +38,9 @@
         <activity
             android:name=".DashboardActivity"
             android:exported="false" />
-        <activity
-            android:name=".CreateNFT"
+            android:name=".Artwork"
             android:exported="true" />
+        
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />

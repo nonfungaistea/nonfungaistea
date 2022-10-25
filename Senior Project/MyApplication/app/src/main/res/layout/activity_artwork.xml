@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Artwork">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="?colorOnPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/app_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-light"
+                android:paddingHorizontal="@dimen/md"
+                android:text="@string/photofy"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/saveBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/sm"
+                android:padding="@dimen/sm"
+                app:drawableEndCompat="@drawable/ic_check"
+                app:drawableTint="@color/secondary_color_variant" />
+
+            <TextView
+                android:id="@+id/addBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/sm"
+                android:padding="@dimen/sm"
+                app:drawableEndCompat="@drawable/ic_add_photo"
+                app:drawableTint="#757575" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/photoCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:layout_constraintBottom_toTopOf="@+id/editToolsWrapper"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_margin="@dimen/sm"
+        android:paddingHorizontal="12sp"
+        app:cardElevation="6sp">
+
+
+        <ImageView
+            android:id="@+id/photoView"
+            android:layout_width="match_parent"
+            android:layout_height="610dp"
+            android:src="@drawable/default_bg"
+            android:contentDescription="@string/app_name"
+            android:adjustViewBounds="true"/>
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/editToolsWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photoCard">
+
+        <HorizontalScrollView
+            android:id="@+id/toolsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:fillViewport="true">
+
+                <TextView
+                    android:id="@+id/rotateBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rotate"
+                    app:drawableBottomCompat="@drawable/ic_collage"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
+
+                <TextView
+                    android:id="@+id/filterBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Filter"
+                    app:drawableBottomCompat="@drawable/ic_filter"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
+                <TextView
+                    android:id="@+id/brightnessBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Brightness"
+                    app:drawableBottomCompat="@drawable/ic_brightness"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
+
+                <TextView
+                    android:id="@+id/contrastBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contrast"
+                    app:drawableBottomCompat="@drawable/ic_contrast"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
+
+                <TextView
+                    android:id="@+id/addTextBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Text"
+                    app:drawableBottomCompat="@drawable/ic_text"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
+
+                <TextView
+                    android:id="@+id/shapeBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Shape"
+                    app:drawableBottomCompat="@drawable/ic_shape"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
+
+                <TextView
+                    android:id="@+id/brushBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Brush"
+                    app:drawableBottomCompat="@drawable/ic_brush"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <include layout="@layout/brightness"/>
+        <include layout="@layout/contrast"/>
+        <include layout="@layout/filters"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

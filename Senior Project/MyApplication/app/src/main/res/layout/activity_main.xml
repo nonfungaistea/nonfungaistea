@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/login"
     android:rotationY="180"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="vertical">
 
 
     <TextView
@@ -23,8 +23,6 @@
         android:textColor="#000"
         android:textSize="60sp"
         android:textStyle="bold" />
-
-
 
 
     <EditText
