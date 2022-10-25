@@ -6,24 +6,41 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.preference.PreferenceManager
-import android.widget.TextView
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.widget.Toast
 import com.example.myapplication.databinding.ActivityDashboardBinding
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigationrail.NavigationRailView
 
 
 class DashboardActivity() : AppCompatActivity()  {
-    private var boardSize: BoardSize = BoardSize.HARD
+
     private lateinit var binding: ActivityDashboardBinding
-//    private lateinit var rvBoard: RecyclerView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val plusImage = DEFAULT_ICONS.take(boardSize.getNumPairs())
-        binding.rvBoard.adapter = VisualCardAdapter(this,boardSize,plusImage)    //8 Rows
-        binding.rvBoard.setHasFixedSize(true)   // Size is always going to be defined when it boots up no matter how many it has, but with true it makes app more efficient.
-        binding.rvBoard.layoutManager = GridLayoutManager(this,boardSize.getWidth()) // 2 Columns
+        val navRailFab: FloatingActionButton = findViewById(R.id.nav_rail_fab)
+        navRailFab.setOnClickListener {
+            Toast.makeText(this, "FAB Clicked!", Toast.LENGTH_SHORT).show()
+            this.startActivity(Intent(this, GetPicture::class.java))
+        }
+        val navigationRail: NavigationRailView = findViewById(R.id.navigationRail)
+        navigationRail.setOnItemSelectedListener { menuItem ->
+        when (menuItem.itemId) {
+            R.id.files -> {
+                Toast.makeText(this, "Files", Toast.LENGTH_SHORT).show()
+                true
+            }
+            R.id.images -> {
+                Toast.makeText(this, "Images", Toast.LENGTH_SHORT).show()
+                true
+            }
+
+            else -> false
+        }
+    }
+
         //setContentView(R.layout.activity_dashboard)
 
         mySettings()
