@@ -3,11 +3,13 @@ package com.example.myapplication
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.ColorMatrix
 import android.graphics.ColorMatrixColorFilter
 import android.graphics.LightingColorFilter
 import android.graphics.Paint
 import android.graphics.drawable.BitmapDrawable
+import android.media.Image
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -27,6 +29,16 @@ class Artwork : AppCompatActivity() {
     private lateinit var filterBackBtn: TextView
     //Filter Btns
     private lateinit var greyBtn: ImageView
+    private lateinit var ogPhotobtn: ImageView
+    private lateinit var redBtn: ImageView
+    private lateinit var greenBtn: ImageView
+    private lateinit var blueBtn: ImageView
+    private lateinit var redGreenBtn: ImageView
+    private lateinit var redBlueBtn: ImageView
+    private lateinit var greenBlueBtn: ImageView
+    private lateinit var sepiaBtn: ImageView
+    private lateinit var binaryBtn: ImageView
+    private lateinit var invertBtn: ImageView
     //Brightness.xml
     private lateinit var brightnessSeekbarLayout: ConstraintLayout
     private lateinit var brightnessSeekbarOkView: TextView
@@ -38,13 +50,9 @@ class Artwork : AppCompatActivity() {
 
     private lateinit var ogBmp: BitmapDrawable
 
+
     private lateinit var filtered: String
-    private lateinit var filteredBmp: Bitmap
-
-
-
-
-
+    var filteredBmp: Bitmap? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +60,6 @@ class Artwork : AppCompatActivity() {
         binding = ActivityArtworkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ogBmp = binding.photoView.drawable as BitmapDrawable
-        mySettings()
         onClick()
     }
 
@@ -62,7 +69,6 @@ class Artwork : AppCompatActivity() {
 
         binding.rotateBtn.setOnClickListener{
             //binding.toolsLayout.visibility = View.GONE
-
         }
 
         //Filters
@@ -113,15 +119,6 @@ class Artwork : AppCompatActivity() {
         //seek bar listener (brightness and contrast)
         seekBarListeners()
 
-//        binding.addTextBtn.setOnClickListener {
-//            //binding.toolsLayout.visibility = View.GONE
-//        }
-//        binding.shapeBtn.setOnClickListener {
-//            //binding.toolsLayout.visibility = View.GONE
-//        }
-//        binding.brushBtn.setOnClickListener {
-//            //binding.toolsLayout.visibility = View.GONE
-//        }
     }
 
     private fun seekBarListeners() {
@@ -130,9 +127,7 @@ class Artwork : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 adjustBrightness(progress)
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
             override fun onStopTrackingTouch(seekBar: SeekBar?){}
         })
 
@@ -140,11 +135,8 @@ class Artwork : AppCompatActivity() {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 adjustContrast(progress)
             }
-
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-
         })
 
 
@@ -152,7 +144,24 @@ class Artwork : AppCompatActivity() {
     }
 
     private fun adjustContrast(value: Int) {
+        // btimap from original bitmap drawable
+        var bmp = ogBmp.bitmap
+        if (filteredBmp != null)
+            bmp = filteredBmp
+        //define a mull
+        val mul = 0X000000
+        val initialHex = Tool.hexScale()[value]
+        val initialAdd = "0X" + initialHex + initialHex + initialHex
+        val add = Integer.decode(initialAdd)
 
+        val outputBitmap = Bitmap.createScaledBitmap(bmp, bmp.width, bmp.height, false).copy(Bitmap.Config.ARGB_8888, true)
+        val paint = Paint()
+        val colorFilter = LightingColorFilter(add, mul)
+        paint.colorFilter = colorFilter
+
+        val canvas = Canvas(outputBitmap)
+        canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        binding.photoView.setImageBitmap(outputBitmap)
     }
 
     private fun adjustBrightness(value: Int) {
@@ -163,35 +172,86 @@ class Artwork : AppCompatActivity() {
         }
         //define a mul
         val mul = 0XFFFFFF
-        var initialHex = Tool.hexScale()[value]
-        var initialAdd = "0X" + initialHex + initialHex + initialHex
-        var add = Integer.decode(initialAdd)
-        var outputBitmap = Bitmap.createScaledBitmap(bmp, bmp.width, bmp.height, false).copy(Bitmap.Config.ARGB_8888, true)
-        var paint = Paint()
-        var colorFilter = LightingColorFilter(mul, add)
+        val initialHex = Tool.hexScale()[value]
+        val initialAdd = "0X" + initialHex + initialHex + initialHex
+        val add = Integer.decode(initialAdd)
+        val outputBitmap = Bitmap.createScaledBitmap(bmp, bmp.width, bmp.height, false).copy(Bitmap.Config.ARGB_8888, true)
+        val paint = Paint()
+        val colorFilter = LightingColorFilter(mul, add)
         paint.colorFilter = colorFilter
 
-        var canvas = Canvas(outputBitmap)
+        val canvas = Canvas(outputBitmap)
         canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
         binding.photoView.setImageBitmap(outputBitmap)
-
-
-
 
     }
 
     private fun filters() {
         //Grey scale filter btn
-         greyBtn = findViewById(R.id.greyBtn)
-
+        greyBtn = findViewById(R.id.greyBtn)
         //General filter button
         filterBtn(greyBtn, Filter.grey)
-
         greyBtn.setOnClickListener {
             //filter photo to grey scale
             filter(Filter.grey)
         }
+        //Reset button
+        ogPhotobtn = findViewById(R.id.ogBtn)
+        ogPhotobtn.setOnClickListener {
+            filteredBmp = null
+            filtered = null.toString()
+
+            binding.photoView.setImageDrawable((ogBmp))
+            brightnessSeekBar.progress = 0
+            contrastSeekBar.progress = 255
+        }
+
+        //Red btn
+        redBtn = findViewById(R.id.redBtn)
+        filterBtn(redBtn, Filter.red)
+        redBtn.setOnClickListener {filter(Filter.red)}
+
+        //Green btn
+        greenBtn = findViewById(R.id.greenBtn)
+        filterBtn(greenBtn, Filter.green)
+        greenBtn.setOnClickListener {filter(Filter.green)}
+
+        //Blue btn
+        blueBtn = findViewById(R.id.blueBtn)
+        filterBtn(blueBtn, Filter.blue)
+        blueBtn.setOnClickListener {filter(Filter.blue)}
+
+        redGreenBtn = findViewById(R.id.redGreenBtn)
+        filterBtn(redGreenBtn, Filter.redGreen)
+        redGreenBtn.setOnClickListener {filter(Filter.redGreen)}
+
+        redBlueBtn = findViewById(R.id.redBlueBtn)
+        filterBtn(redBlueBtn, Filter.redBlue)
+        redBlueBtn.setOnClickListener {filter(Filter.redBlue)}
+
+        greenBlueBtn = findViewById(R.id.greenBlueBtn)
+        filterBtn(greenBlueBtn, Filter.greenBlue)
+        greenBlueBtn.setOnClickListener {filter(Filter.greenBlue)}
+
+        sepiaBtn = findViewById(R.id.sepiaBtn)
+        filterBtn(sepiaBtn, Filter.sepia)
+        sepiaBtn.setOnClickListener {filter(Filter.sepia)}
+
+        binaryBtn = findViewById(R.id.binaryBtn)
+        filterBtn(binaryBtn, Filter.binary)
+        binaryBtn.setOnClickListener {filter(Filter.binary)}
+
+        invertBtn = findViewById(R.id.invertBtn)
+        filterBtn(invertBtn, Filter.invert)
+        invertBtn.setOnClickListener {filter(Filter.invert)}
+
+
     }
+
+
+
+
+
 
     private fun filter(filter: String){
         //create a bitmap from our original bitmap drawable
@@ -215,8 +275,103 @@ class Artwork : AppCompatActivity() {
             //draw out bitmap
             canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
         }
+
+        if (filter.equals(Filter.red)){
+            val mul = 0XFF0000
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+
+        if (filter.equals(Filter.green)){
+            val mul = 0X00FF00
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+
+        if (filter.equals(Filter.blue)){
+            val mul = 0X0000FF
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+
+        if (filter.equals(Filter.redGreen)){
+            val mul = 0XFFFF00
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+
+        if (filter.equals(Filter.redBlue)){
+            val mul = 0XFF00FF
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+
+        if (filter.equals(Filter.greenBlue)){
+            val mul = 0X00FFFF
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+
+        if (filter.equals(Filter.sepia)){
+            val colorMatrix = ColorMatrix()
+            colorMatrix.setSaturation(0F)
+            val colorScale = ColorMatrix()
+            colorScale.setScale(1F, 1F,0.8F, 1F)
+            colorMatrix.postConcat(colorScale)
+            val colorFilter = ColorMatrixColorFilter(colorMatrix)
+            paint.setColorFilter(colorFilter)
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+
+        if (filter.equals(Filter.binary)){
+            val colorMatrix = ColorMatrix()
+            colorMatrix.setSaturation(0F)
+            val m = 255F
+            val t = -255 * 128F
+            val threshold = ColorMatrix(floatArrayOf(
+                m, 0F, 0F, 1F, t,
+                0F, m, 0F, 1F, t,
+                0F, 0F, m, 1F, t,
+                0F, 0F, 0F, 1F, 0F
+            ))
+
+            colorMatrix.postConcat(threshold)
+            val colorFilter = ColorMatrixColorFilter(colorMatrix)
+            paint.setColorFilter(colorFilter)
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+
+        }
+
+        if (filter.equals(Filter.invert)){
+            val colorMatrix = ColorMatrix()
+            colorMatrix.setSaturation(0F)
+            colorMatrix.set(floatArrayOf(
+                -1F, 0F, 0F, 0F, 255F,
+                0F, -1F, 0F, 0F, 255F,
+                0F, 0F, -1F, 0F, 255F,
+                0F, 0F, 0F, 1F, 0F
+            ))
+            val colorFilter = ColorMatrixColorFilter(colorMatrix)
+            paint.setColorFilter(colorFilter)
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
         //Set the output bitmap to imageview
         binding.photoView.setImageBitmap(outputBitmap)
+        filteredBmp = outputBitmap
+        filtered = filter
+
     }
 
     private fun filterBtn(btn: ImageView?, filter: String) {
@@ -245,36 +400,93 @@ class Artwork : AppCompatActivity() {
             //draw out bitmap
             canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
         }
+        if (filter.equals(Filter.red)){
+            val mul = 0XFF0000
+            val add = 0X000000
+            var colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+        if (filter.equals(Filter.green)){
+            val mul = 0X00FF00
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
 
+        if (filter.equals(Filter.blue)){
+            val mul = 0X0000FF
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+        if (filter.equals(Filter.redGreen)){
+            val mul = 0XFFFF00
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+
+        if (filter.equals(Filter.redBlue)){
+            val mul = 0XFF00FF
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+        if (filter.equals(Filter.greenBlue)){
+            val mul = 0X00FFFF
+            val add = 0X000000
+            val colorFilter = LightingColorFilter(mul, add)
+            paint.colorFilter = colorFilter
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+        if (filter.equals(Filter.sepia)){
+            val colorMatrix = ColorMatrix()
+            colorMatrix.setSaturation(0F)
+            val colorScale = ColorMatrix()
+            colorScale.setScale(1F, 1F,0.8F, 1F)
+            colorMatrix.postConcat(colorScale)
+            val colorFilter = ColorMatrixColorFilter(colorMatrix)
+            paint.setColorFilter(colorFilter)
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
+        if (filter.equals(Filter.binary)){
+            val colorMatrix = ColorMatrix()
+            colorMatrix.setSaturation(0F)
+            val m = 255F
+            val t = -255 * 128F
+            val threshold = ColorMatrix(floatArrayOf(
+                m, 0F, 0F, 1F, t,
+                0F, m, 0F, 1F, t,
+                0F, 0F, m, 1F, t,
+                0F, 0F, 0F, 1F, 0F
+            ))
+
+            colorMatrix.postConcat(threshold)
+            val colorFilter = ColorMatrixColorFilter(colorMatrix)
+            paint.setColorFilter(colorFilter)
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+
+        }
+        if (filter.equals(Filter.invert)){
+            val colorMatrix = ColorMatrix()
+            colorMatrix.setSaturation(0F)
+            colorMatrix.set(floatArrayOf(
+                -1F, 0F, 0F, 0F, 255F,
+                0F, -1F, 0F, 0F, 255F,
+                0F, 0F, -1F, 0F, 255F,
+                0F, 0F, 0F, 1F, 0F
+            ))
+            val colorFilter = ColorMatrixColorFilter(colorMatrix)
+            paint.setColorFilter(colorFilter)
+            canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
+        }
         //Set the output bitmap to the actual button instead of the whole image
         btn.setImageBitmap(outputBitmap)
 
-        // save filtered resources
-        filteredBmp = outputBitmap
-        filtered = filter
-
-    }
-
-
-
-    private fun mySettings(){
-        //val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-        //val signature = prefs.getString("signature", "")
-        //binding.apply {}
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.settings_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.action_settings ->{
-                val intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 }

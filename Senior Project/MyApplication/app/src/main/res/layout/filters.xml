@@ -39,7 +39,7 @@
                 app:cardCornerRadius="@dimen/sm">
 
                 <ImageView
-                    android:id="@+id/filter0"
+                    android:id="@+id/ogBtn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/default_bg"
@@ -75,7 +75,7 @@
                 app:cardCornerRadius="@dimen/sm">
 
                 <ImageView
-                    android:id="@+id/fiter2"
+                    android:id="@+id/redBtn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/default_bg"
@@ -93,7 +93,7 @@
                 app:cardCornerRadius="@dimen/sm">
 
                 <ImageView
-                    android:id="@+id/fiter3"
+                    android:id="@+id/greenBtn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/default_bg"
@@ -111,7 +111,7 @@
                 app:cardCornerRadius="@dimen/sm">
 
                 <ImageView
-                    android:id="@+id/fiter4"
+                    android:id="@+id/blueBtn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/default_bg"
@@ -129,7 +129,97 @@
                 app:cardCornerRadius="@dimen/sm">
 
                 <ImageView
-                    android:id="@+id/fiter5"
+                    android:id="@+id/redGreenBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/default_bg"
+                    android:contentDescription="Test"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sm"
+                android:paddingHorizontal="12sp"
+                app:cardElevation="@dimen/xx_sm"
+                app:cardCornerRadius="@dimen/sm">
+
+                <ImageView
+                    android:id="@+id/redBlueBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/default_bg"
+                    android:contentDescription="Test"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sm"
+                android:paddingHorizontal="12sp"
+                app:cardElevation="@dimen/xx_sm"
+                app:cardCornerRadius="@dimen/sm">
+
+                <ImageView
+                    android:id="@+id/greenBlueBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/default_bg"
+                    android:contentDescription="Test"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sm"
+                android:paddingHorizontal="12sp"
+                app:cardElevation="@dimen/xx_sm"
+                app:cardCornerRadius="@dimen/sm">
+
+                <ImageView
+                    android:id="@+id/sepiaBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/default_bg"
+                    android:contentDescription="Test"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sm"
+                android:paddingHorizontal="12sp"
+                app:cardElevation="@dimen/xx_sm"
+                app:cardCornerRadius="@dimen/sm">
+
+                <ImageView
+                    android:id="@+id/binaryBtn"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/default_bg"
+                    android:contentDescription="Test"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/sm"
+                android:paddingHorizontal="12sp"
+                app:cardElevation="@dimen/xx_sm"
+                app:cardCornerRadius="@dimen/sm">
+
+                <ImageView
+                    android:id="@+id/invertBtn"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:src="@drawable/default_bg"
