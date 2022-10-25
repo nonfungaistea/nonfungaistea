@@ -37,15 +37,13 @@
             android:exported="false" />
         <activity
             android:name=".DashboardActivity"
-            android:exported="false" />
+            android:exported="true" />
+            <activity
             android:name=".Artwork"
             android:exported="true" />
         
         <activity
             android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".GetPicture"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

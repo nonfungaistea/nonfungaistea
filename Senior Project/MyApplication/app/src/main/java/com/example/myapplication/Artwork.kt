@@ -1,25 +1,20 @@
 package com.example.myapplication
 
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
-import android.graphics.LightingColorFilter
-import android.graphics.Paint
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
-import android.media.Image
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import com.example.myapplication.databinding.ActivityArtworkBinding
+import java.io.File
+import java.io.InputStream
 
 
 class Artwork : AppCompatActivity() {
@@ -50,20 +45,40 @@ class Artwork : AppCompatActivity() {
 
     private lateinit var ogBmp: BitmapDrawable
 
-
+    private lateinit var stream: InputStream
+    private var uri:Uri? = null
     private lateinit var filtered: String
     var filteredBmp: Bitmap? = null
 
+    private lateinit var image:ImageView
+    val path = File("res/drawable/default_bg.webp")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val extras = intent.extras
+        if (extras != null && extras.containsKey("KEY")) {
+            uri= Uri.parse(extras.getString("KEY"));
+        }
+//        path.walk().filter { it.name.endsWith(".webp") }
         binding = ActivityArtworkBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ogBmp = binding.photoView.drawable as BitmapDrawable
+        stream = uri?.let { contentResolver.openInputStream(it) }!!
+        val inputStream = contentResolver.openInputStream(uri!!)
+        ogBmp = Drawable.createFromStream(inputStream, uri.toString()) as BitmapDrawable
+
+        //ogBmp = uri as BitmapDrawable
+
+        if (ContextCompat.getDrawable(this, R.drawable.default_bg)!=null){
+
+        }
+
+
         onClick()
     }
 
-
+//    fun getArtwork(){
+//        ogBmp =
+//    }
 
     private fun onClick() {
 
