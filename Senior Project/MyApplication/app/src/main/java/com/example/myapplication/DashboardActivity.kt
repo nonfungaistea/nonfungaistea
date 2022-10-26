@@ -48,12 +48,17 @@ class DashboardActivity() : AppCompatActivity()  {
                 showHide(buttonLoad)
                 showHide(buttonCustomize)
             }
+
             buttonCustomize.setOnClickListener{
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.setClass(this@DashboardActivity, Artwork::class.java)
-                intent.putExtra("KEY", imageUri)
+                val extras = Bundle()
+                val intent = Intent(this, Artwork::class.java)
+                extras.putString("KEY", imageUri.toString())
+                intent.putExtras(extras)
+//                val intent = Intent(Intent.ACTION_VIEW)
+//                intent.setClass(this@DashboardActivity, Artwork::class.java)
+//                intent.putExtra("KEY", imageUri)
                 startActivity(intent)
-                this.startActivity(Intent(this, Artwork::class.java))
+                //this.startActivity(Intent(this, Artwork::class.java))
             }
         }
 

@@ -1,11 +1,13 @@
 package com.example.myapplication
 
+import android.R.attr.bitmap
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
@@ -14,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.example.myapplication.databinding.ActivityArtworkBinding
 import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
 
 
@@ -42,44 +45,70 @@ class Artwork : AppCompatActivity() {
     private lateinit var contrastSeekBarLayout: ConstraintLayout
     private lateinit var contrastSeekbarOkView: TextView
     private lateinit var contrastSeekBar: SeekBar
-
-    private lateinit var ogBmp: BitmapDrawable
-
+    //saveArt
+    private lateinit var saveButton:Button
+    private lateinit var ogbmp: BitmapDrawable
+    private lateinit var editImage: ImageView
     private lateinit var stream: InputStream
     private var uri:Uri? = null
     private lateinit var filtered: String
     var filteredBmp: Bitmap? = null
 
     private lateinit var image:ImageView
-    val path = File("res/drawable/default_bg.webp")
-
+    //val path = File("res/drawable/default_bg.webp")
+//    val extras = intent.extras
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val extras = intent.extras
-        if (extras != null && extras.containsKey("KEY")) {
-            uri= Uri.parse(extras.getString("KEY"));
-        }
-//        path.walk().filter { it.name.endsWith(".webp") }
+        val intent = intent
+        val imageString = intent.getStringExtra("KEY")
+        uri = Uri.parse(imageString)
         binding = ActivityArtworkBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        stream = uri?.let { contentResolver.openInputStream(it) }!!
+//        stream = uri?.let { contentResolver.openInputStream(it) }!!
         val inputStream = contentResolver.openInputStream(uri!!)
-        ogBmp = Drawable.createFromStream(inputStream, uri.toString()) as BitmapDrawable
+        ogbmp = Drawable.createFromStream(inputStream, imageString) as BitmapDrawable
 
         //ogBmp = uri as BitmapDrawable
 
-        if (ContextCompat.getDrawable(this, R.drawable.default_bg)!=null){
-
-        }
-
-
+        editImage=findViewById(R.id.photoView)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.greyBtn)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.ogBtn)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.redBtn)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.blueBtn)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.greenBtn)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.redGreenBtn)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.redBlueBtn)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.greenBlueBtn)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.sepiaBtn)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.binaryBtn)
+        editImage.setImageDrawable(ogbmp)
+        editImage=findViewById(R.id.invertBtn)
+        editImage.setImageDrawable(ogbmp)
         onClick()
+        //save to gallery
+
     }
 
 //    fun getArtwork(){
 //        ogBmp =
 //    }
 
+//    fun getExtra(){
+//
+//        if (extras != null && extras.containsKey("KEY")) {
+//            uri= Uri.parse(extras.getString("KEY"));
+//        }
+//    }
     private fun onClick() {
 
         binding.rotateBtn.setOnClickListener{
@@ -134,6 +163,8 @@ class Artwork : AppCompatActivity() {
         //seek bar listener (brightness and contrast)
         seekBarListeners()
 
+
+
     }
 
     private fun seekBarListeners() {
@@ -160,7 +191,7 @@ class Artwork : AppCompatActivity() {
 
     private fun adjustContrast(value: Int) {
         // btimap from original bitmap drawable
-        var bmp = ogBmp.bitmap
+        var bmp = ogbmp.bitmap
         if (filteredBmp != null)
             bmp = filteredBmp
         //define a mull
@@ -181,7 +212,7 @@ class Artwork : AppCompatActivity() {
 
     private fun adjustBrightness(value: Int) {
         //Bitmap from original bitmap drawable
-        var bmp = ogBmp.bitmap
+        var bmp = ogbmp.bitmap
         if (filteredBmp != null){
             bmp = filteredBmp
         }
@@ -216,7 +247,7 @@ class Artwork : AppCompatActivity() {
             filteredBmp = null
             filtered = null.toString()
 
-            binding.photoView.setImageDrawable((ogBmp))
+            binding.photoView.setImageDrawable((ogbmp))
             brightnessSeekBar.progress = 0
             contrastSeekBar.progress = 255
         }
@@ -270,7 +301,7 @@ class Artwork : AppCompatActivity() {
 
     private fun filter(filter: String){
         //create a bitmap from our original bitmap drawable
-        val bmp = ogBmp.bitmap
+        val bmp = ogbmp.bitmap
         //Generate an output bitmap from the above bitmap
         val outputBitmap = Bitmap.createScaledBitmap(bmp, bmp.width, bmp.height, false).copy(Bitmap.Config.ARGB_8888, true)
         //Define a paint for styling and coloring the bitmap
