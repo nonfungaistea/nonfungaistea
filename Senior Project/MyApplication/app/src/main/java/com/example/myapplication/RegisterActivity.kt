@@ -75,7 +75,7 @@ class RegisterActivity : AppCompatActivity() {
                 // If the registration of the user is successfully done
                 if (it.isSuccessful) {
                     // Create a user object
-                    val user = User(fullname, email, password)
+                    val user = User(fullname, email, password, )
                     // Notify the user that he was registered successfully
                     Toast.makeText(this, "User was registered successfully", Toast.LENGTH_LONG).show()
                     // Locates the directory for the new user and adds him below his ID with all of his information

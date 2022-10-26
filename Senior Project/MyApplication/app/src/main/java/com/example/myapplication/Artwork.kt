@@ -6,6 +6,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -15,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.example.myapplication.databinding.ActivityArtworkBinding
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -96,8 +99,10 @@ class Artwork : AppCompatActivity() {
         editImage.setImageDrawable(ogbmp)
         onClick()
         //save to gallery
+        //saveFile()
+        }
 
-    }
+
 
 //    fun getArtwork(){
 //        ogBmp =
@@ -109,6 +114,38 @@ class Artwork : AppCompatActivity() {
 //            uri= Uri.parse(extras.getString("KEY"));
 //        }
 //    }
+
+
+
+    fun bitmapToFile(bitmap: Bitmap, fileNameToSave: String): File? { // File name like "image.png"
+        //create a file to write bitmap data
+        var file: File? = null
+        return try {
+            file = File(Environment.getExternalStorageDirectory().toString() + File.separator + fileNameToSave)
+            file.createNewFile()
+
+            //Convert bitmap to byte array
+            val bos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
+            val bitmapdata = bos.toByteArray()
+
+            //write the bytes in file
+            val fos = FileOutputStream(file)
+            fos.write(bitmapdata)
+            fos.flush()
+            fos.close()
+            file
+        } catch (e: Exception) {
+            e.printStackTrace()
+            file // it will return null
+        }
+    }
+    fun saveFile() {
+        saveButton = findViewById(R.id.saveBtn)
+        saveButton.setOnClickListener {
+            bitmapToFile(findViewById(R.id.ogBtn), "Ham")
+        }
+    }
     private fun onClick() {
 
         binding.rotateBtn.setOnClickListener{
