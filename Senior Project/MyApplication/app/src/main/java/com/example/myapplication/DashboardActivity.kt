@@ -73,20 +73,22 @@ class DashboardActivity() : AppCompatActivity()  {
                 Toast.makeText(this, "Images", Toast.LENGTH_SHORT).show()
                 true
             }
-
+            R.id.settings -> {
+                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> false
         }
     }
 
-        //setContentView(R.layout.activity_dashboard)
-
-        mySettings()
     }
     private fun openSomeActivityForResult(gallery: Intent) {
         resultLauncher.launch(gallery)
     }
     var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK && result.data?.data != null) {
+        if (result.resultCode == RESULT_OK && result.data?.data != null) {
             imageUri= result.data?.data
             imageView.setImageURI(imageUri)
         }
@@ -99,29 +101,6 @@ class DashboardActivity() : AppCompatActivity()  {
             View.VISIBLE
         }
     }
-    private fun mySettings(){
 
-        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
-
-        val signature = prefs.getString("signature", "")
-
-        //binding.apply {}
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.settings_menu, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
-        when(item.itemId){
-            R.id.action_settings ->{
-                val intent = Intent(this, SettingsActivity::class.java)
-                startActivity(intent)
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
     //if (position == 1) this.startActivity(Intent(this, CreateNFT::class.java))
 }

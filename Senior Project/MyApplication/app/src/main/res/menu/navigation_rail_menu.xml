@@ -12,6 +12,10 @@
         android:enabled="true"
         android:icon="@drawable/ic_image"
         android:title="Images" />
-
+    <item
+        android:id="@+id/settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
 
 </menu>

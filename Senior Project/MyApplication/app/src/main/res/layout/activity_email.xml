@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".EmailActivity">
 
+    <ImageButton
+        android:id="@+id/backToSettings"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/ic_backarrow" />
 
     <TextView
         android:id="@+id/email_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="0dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp"
         android:text="Change your email?"
-        android:textColor="#000"
         android:textSize="30sp"
         android:textStyle="bold" />
 
@@ -26,21 +29,18 @@
         android:id="@+id/email"
         android:layout_width="267dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/logpass"
-        android:layout_width="259dp"
-        android:layout_height="58dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
+        android:layout_width="267dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />
@@ -49,10 +49,8 @@
         android:id="@+id/new_email"
         android:layout_width="267dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="170dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="New Email"
         android:inputType="textEmailAddress" />
@@ -62,10 +60,8 @@
         android:id="@+id/new_email_confirm"
         android:layout_width="267dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="230dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="Confirm New Email"
         android:inputType="textEmailAddress" />
@@ -74,12 +70,11 @@
         android:id="@+id/submit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="192dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="100dp"
+        android:layout_gravity="center"
         android:background="@color/purple_200"
         android:text="Change"
-        android:textSize="15dp" />
+        android:textSize="15sp" />
 
-</RelativeLayout>
+</LinearLayout>

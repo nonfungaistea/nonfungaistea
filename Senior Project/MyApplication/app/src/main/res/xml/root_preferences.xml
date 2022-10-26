@@ -38,33 +38,24 @@
 
         </Preference>
 
-<!--        <ListPreference-->
-<!--            app:defaultValue="reply"-->
-<!--            app:entries="@array/reply_entries"-->
-<!--            app:entryValues="@array/reply_values"-->
-<!--            app:key="reply"-->
-<!--            app:title="List Preference"-->
-<!--            app:useSimpleSummaryProvider="true" />-->
-
     </PreferenceCategory>
 
     <PreferenceCategory app:title="Other">
 
-        <SwitchPreferenceCompat
+        <SwitchPreference
             app:summary="Switch between dark mode and light mode"
             app:key="darkmode"
             app:defaultValue="false"
             app:title="Dark mode" />
 
-<!--        <SwitchPreferenceCompat-->
-<!--            app:key="notifications"-->
-<!--            app:defaultValue="true"-->
-<!--            app:title="Enable message notifications"/>-->
-
-<!--        <Preference-->
-<!--            app:key="feedback"-->
-<!--            app:title="Send feedback"-->
-<!--            app:summary="Report technical issues or suggest new features"/>-->
+        <Preference
+            app:title="Send feedback"
+            app:summary="Report technical issues or suggest new features">
+            <intent
+                android:action="com.example.myapplication.SETTING_START_ACTIVITY"
+                android:targetClass="com.example.myapplication.FeedbackActivity"
+                android:targetPackage="com.example.myapplication" />
+        </Preference>
 
 
     </PreferenceCategory>
