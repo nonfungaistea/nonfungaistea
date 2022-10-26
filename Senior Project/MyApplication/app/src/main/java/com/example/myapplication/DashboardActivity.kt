@@ -73,11 +73,15 @@ class DashboardActivity() : AppCompatActivity()  {
                 Toast.makeText(this, "Images", Toast.LENGTH_SHORT).show()
                 true
             }
+            R.id.wallet -> {
+                Toast.makeText(this, "Wallet", Toast.LENGTH_SHORT).show()
+                true
             R.id.settings -> {
                 Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, SettingsActivity::class.java)
                 startActivity(intent)
                 true
+            }
             }
             else -> false
         }
