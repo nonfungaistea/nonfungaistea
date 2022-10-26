@@ -68,7 +68,11 @@ class DashboardActivity() : AppCompatActivity()  {
                 Toast.makeText(this, "Images", Toast.LENGTH_SHORT).show()
                 true
             }
+            R.id.wallet -> {
+                Toast.makeText(this, "Wallet", Toast.LENGTH_SHORT).show()
+                true
 
+            }
             else -> false
         }
     }

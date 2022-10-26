@@ -12,6 +12,11 @@
         android:enabled="true"
         android:icon="@drawable/ic_image"
         android:title="Images" />
+    <item
+        android:id="@+id/wallet"
+        android:enabled="true"
+        android:icon="@drawable/ic_wallet"
+        android:title="Wallet" />
 
 
 </menu>
