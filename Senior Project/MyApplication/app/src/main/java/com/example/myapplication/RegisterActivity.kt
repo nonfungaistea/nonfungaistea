@@ -69,13 +69,16 @@ class RegisterActivity : AppCompatActivity() {
             binding.password.requestFocus()
             return
         }
+        if (image<String>().isEmpty()){
+            return
+        }
         // Create an Instance and create a register a user with an email and password
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
                 // If the registration of the user is successfully done
                 if (it.isSuccessful) {
                     // Create a user object
-                    val user = User(fullname, email, password)
+                    val user = User(fullname, email, password, images = (''))
                     // Notify the user that he was registered successfully
                     Toast.makeText(this, "User was registered successfully", Toast.LENGTH_LONG).show()
                     // Locates the directory for the new user and adds him below his ID with all of his information
