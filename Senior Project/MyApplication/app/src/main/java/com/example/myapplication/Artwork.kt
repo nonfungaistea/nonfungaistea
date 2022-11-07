@@ -1,13 +1,11 @@
 package com.example.myapplication
 
-import android.R.attr.bitmap
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -15,8 +13,10 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.example.myapplication.databinding.ActivityArtworkBinding
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
@@ -99,8 +99,11 @@ class Artwork : AppCompatActivity() {
         editImage.setImageDrawable(ogbmp)
         onClick()
         //save to gallery
-        //saveFile()
+        saveButton = findViewById(R.id.saveBtn)
+        saveButton.setOnClickListener {
+            saveFile()
         }
+    }
 
 
 
@@ -114,8 +117,6 @@ class Artwork : AppCompatActivity() {
 //            uri= Uri.parse(extras.getString("KEY"));
 //        }
 //    }
-
-
 
     fun bitmapToFile(bitmap: Bitmap, fileNameToSave: String): File? { // File name like "image.png"
         //create a file to write bitmap data
@@ -141,9 +142,18 @@ class Artwork : AppCompatActivity() {
         }
     }
     fun saveFile() {
-        saveButton = findViewById(R.id.saveBtn)
-        saveButton.setOnClickListener {
-            bitmapToFile(findViewById(R.id.ogBtn), "Ham")
+        var storage: FirebaseStorage = FirebaseStorage.getInstance()
+        val storageRef: StorageReference = storage.reference
+        val spaceRef = storageRef.child("images/newImage1.jpg")
+        val bitmap: Bitmap = binding.photoView.drawable.toBitmap()
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+        var uploadTask = spaceRef.putBytes(data)
+        uploadTask.addOnFailureListener{
+
+        }.addOnSuccessListener{
+            //taskSnapshot.metadata contains file metadata such as size, content-type, etc.
         }
     }
     private fun onClick() {
