@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 
 class MainActivity : AppCompatActivity() {
@@ -80,8 +81,10 @@ class MainActivity : AppCompatActivity() {
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener{
             if (it.isSuccessful){
-                this.startActivity(Intent(this, DashboardActivity::class.java))
-
+                val extras = Bundle()
+                val intent = Intent(this, DashboardActivity::class.java)
+                intent.putExtras(extras)
+                startActivity(intent)
             }else{
                 Toast.makeText(this, "Failed to login. Verify credentials.", Toast.LENGTH_LONG).show()
             }

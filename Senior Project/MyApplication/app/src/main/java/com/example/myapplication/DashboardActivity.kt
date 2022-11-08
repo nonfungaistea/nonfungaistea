@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.renderscript.Sampler.Value
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,15 +19,27 @@ import androidx.preference.PreferenceManager
 import com.example.myapplication.databinding.ActivityDashboardBinding
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigationrail.NavigationRailView
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 
 class DashboardActivity() : AppCompatActivity()  {
 
     private lateinit var binding: ActivityDashboardBinding
     lateinit var imageView: ImageView
+    lateinit var database: DatabaseReference
     private var imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //Checks to see if the user is logged in
+        getData()
+        val intent = intent
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
         val navRailFab: FloatingActionButton = findViewById(R.id.nav_rail_fab)
@@ -54,11 +68,7 @@ class DashboardActivity() : AppCompatActivity()  {
                 val intent = Intent(this, Artwork::class.java)
                 extras.putString("KEY", imageUri.toString())
                 intent.putExtras(extras)
-//                val intent = Intent(Intent.ACTION_VIEW)
-//                intent.setClass(this@DashboardActivity, Artwork::class.java)
-//                intent.putExtra("KEY", imageUri)
                 startActivity(intent)
-                //this.startActivity(Intent(this, Artwork::class.java))
             }
         }
 
@@ -87,6 +97,36 @@ class DashboardActivity() : AppCompatActivity()  {
         }
     }
 
+    }
+    private fun getData(){
+        val currentUser: FirebaseUser? = Firebase.auth.currentUser
+
+        if(currentUser == null){
+            Toast.makeText(this, "No Acc", Toast.LENGTH_SHORT).show()
+
+        } else{
+            val listImages: MutableList<String> = mutableListOf()
+            val wow = currentUser.uid
+            val database = Firebase.database.reference
+            val databaseReferencee = database.child("users").child(wow).child("images")
+            databaseReferencee.addValueEventListener(object: ValueEventListener {
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d("Heyo", "Heyo $snapshot")
+                    for (ds in snapshot.children){
+                        listImages.add(ds.value.toString())
+                    }
+                    Log.d("Heyyo", "Heyoo" + listImages.size.toString())
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+            //Get Snapshot, duplicate it, after add to it, then set val
+            Toast.makeText(this, "Acc Found$currentUser", Toast.LENGTH_SHORT).show()
+        }
     }
     private fun openSomeActivityForResult(gallery: Intent) {
         resultLauncher.launch(gallery)

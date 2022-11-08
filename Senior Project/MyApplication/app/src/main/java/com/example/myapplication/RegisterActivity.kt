@@ -45,11 +45,6 @@ class RegisterActivity : AppCompatActivity() {
         val email = binding.email.text.toString().trim()
         val password = binding.password.text.toString().trim()
         var images: LinkedList<String> = LinkedList()
-//        val w: Int = 100
-//        val h: Int = 100
-//        val conf = Bitmap.Config.ARGB_8888 // see other conf types.
-//        val bmp = Bitmap.createBitmap(w, h, conf) // this creates a MUTABLE bitmap.
-//        val defaultImg:BitmapDrawable = BitmapDrawable(resources,bmp)
         images.add("Default")
         if (fullname.isEmpty()){
             binding.fullName.error = "Full name is required"
