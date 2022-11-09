@@ -42,11 +42,13 @@
 
     <PreferenceCategory app:title="Other">
 
-        <SwitchPreference
-            app:summary="Switch between dark mode and light mode"
-            app:key="darkmode"
-            app:defaultValue="false"
-            app:title="Dark mode" />
+        <ListPreference
+            android:defaultValue="@string/pref_night_off"
+            android:entries="@array/night_mode"
+            android:entryValues="@array/night_mode_value"
+            app:key="pref_key_night"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/pref_night_title" />
 
         <Preference
             app:title="Send feedback"

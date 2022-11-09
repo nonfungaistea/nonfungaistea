@@ -18,7 +18,7 @@
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
-            android:parentActivityName=".Artwork"
+            android:parentActivityName=".DashboardActivity"
             android:label="@string/title_activity_settings">
             <meta-data
                 android:name="android.app.lib_name"
