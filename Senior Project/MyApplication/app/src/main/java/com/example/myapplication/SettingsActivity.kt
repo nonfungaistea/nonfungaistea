@@ -9,9 +9,9 @@ import androidx.core.os.BuildCompat
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreference
 
 class SettingsActivity : AppCompatActivity(){
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_activity)
@@ -31,6 +31,15 @@ class SettingsActivity : AppCompatActivity(){
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
             val preference: ListPreference =
                 (findPreference("pref_key_night") as ListPreference?)!!
+//            val currValue: String = preference.value
+//            var done = 0
+//            if (done == 0 && currValue.equals(R.string.pref_night_on)) {
+//                updateTheme(AppCompatDelegate.MODE_NIGHT_NO)
+//                done = 1
+//            }else if (done == 1 && currValue.equals(R.string.pref_night_on)){
+//                updateTheme(AppCompatDelegate.MODE_NIGHT_YES)
+//                done = 1
+//            }
             preference?.onPreferenceChangeListener = modeChangeListener
         }
 
