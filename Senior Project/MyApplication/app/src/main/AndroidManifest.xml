@@ -39,6 +39,9 @@
             android:name=".FeedbackActivity"
             android:exported="false"/>
         <activity
+            android:name=".LogOutActivity"
+            android:exported="false"/>
+        <activity
             android:name=".DashboardActivity"
             android:exported="true" />
         <activity

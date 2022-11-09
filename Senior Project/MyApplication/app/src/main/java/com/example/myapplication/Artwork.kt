@@ -198,7 +198,7 @@ class Artwork : AppCompatActivity() {
                     }
                 })
 
-                database.child("users").child(wow).child("images").setValue(storageRef.child("images/$current.jpg").)
+                database.child("users").child(wow).child("images").setValue(storageRef.child("images/$current.jpg"))
             }
             Log.d("Kitty", "FINAL" + listImages.size.toString())
 //            imageData.add(newImageURL.toString())

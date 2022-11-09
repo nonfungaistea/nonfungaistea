@@ -57,6 +57,15 @@
                 android:targetPackage="com.example.myapplication" />
         </Preference>
 
+        <Preference
+            app:title="Logout"
+            app:summary="Log out of your account">
+            <intent
+                android:action="com.example.myapplication.SETTING_START_ACTIVITY"
+                android:targetClass="com.example.myapplication.LogOutActivity"
+                android:targetPackage="com.example.myapplication" />
+        </Preference>
+
 
     </PreferenceCategory>
 
