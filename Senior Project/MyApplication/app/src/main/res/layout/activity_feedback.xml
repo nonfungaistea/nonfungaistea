@@ -25,7 +25,7 @@
         android:textStyle="bold" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlined_text_input_layout"
+        android:id="@+id/feedback_form"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:hint="Enter your feedback here">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/outlined_edit_text"
+            android:id="@+id/feedback_message"
             android:gravity="top"
             android:inputType="textMultiLine"
             android:lines="5"

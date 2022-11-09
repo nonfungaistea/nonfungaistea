@@ -93,6 +93,12 @@ class DashboardActivity() : AppCompatActivity()  {
                 startActivity(intent)
                 true
             }
+            R.id.profile -> {
+                Toast.makeText(this, "Profile", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ProfileActivity::class.java)
+                startActivity(intent)
+                true
+            }
             else -> false
         }
     }
