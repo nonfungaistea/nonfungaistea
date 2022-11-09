@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toBitmap
 import com.example.myapplication.databinding.ActivityArtworkBinding
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -177,30 +179,55 @@ class Artwork : AppCompatActivity() {
                 Toast.makeText(this, "No Acc", Toast.LENGTH_SHORT).show()
             } else{
                 listImages.clear()
-                Log.d("kitty", "inside")
                 val wow = currentUser.uid
                 val database = Firebase.database.reference
                 val databaseReferencee = database.child("users").child(wow).child("images")
-                databaseReferencee.addValueEventListener(object: ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        Log.d("kitty", "insideR...")
-                        for (ds in snapshot.children){
-                            listImages.add(ds.value.toString())
-                        }
-                        Log.d("kitty", "Aggregated Total Still in Func" + listImages.size.toString())
-                        val newImageURL = storageRef.child("images/$current.jpg").downloadUrl
-                        Log.d("Kitty", "URL " + newImageURL.toString())
-                        listImages.add(newImageURL.toString())
-                        Log.d("Kitty", "URL " + newImageURL.toString())
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
+                val key = databaseReferencee.push().key
+                Log.d("kitty", "$databaseReferencee/$key")
+                Log.d("kitty", "$key")
+                if (key == null){
+                    Log.d("kitty", "Couldn't get push key for posts")
+                    return@addOnSuccessListener
+                }
+                lateinit var newImageUrll: String
+                storageRef.child("images/$current.jpg").downloadUrl.addOnSuccessListener(OnSuccessListener<Uri?> { urie ->
+                    newImageUrll = urie.toString()
+                    Log.d("kitty", urie.toString())
+                    val childUpdates = hashMapOf<String, Any>(
+                        "users/$wow/images/$key" to newImageUrll
+                    )
+                    val checkerr = database.updateChildren(childUpdates)
+                    checkerr.addOnFailureListener{
+                        Log.d("kitty", "worksNOT")
+                    }.addOnSuccessListener {
+                        Log.d("kitty", "works?")
+                        this.startActivity(Intent(this, DashboardActivity::class.java))
                     }
                 })
+//                val check = databaseReferencee.get()
+//                databaseReferencee.addValueEventListener(object: ValueEventListener {
+//                    override fun onDataChange(snapshot: DataSnapshot) {
+//                        Log.d("kitty", "SnapShot: First List Size" + listImages.size.toString())
+//                        Log.d("kitty", "New Snapshot...")
+//                        for (ds in snapshot.children){
+//                            Log.d("kitty", "DSVALUE" + ds.value.toString())
+//                            listImages.add(ds.value.toString())
+//                        }
+//                        Log.d("kitty", "SnapShot: Middle List Size" + listImages.size.toString())
+//                        val newImageURL = storageRef.child("images/$current.jpg").downloadUrl
+////                        Log.d("Kitty", "URL " + newImageURL.toString())
+//                        listImages.add(newImageURL.toString())
+//                        Log.d("Kitty", "Image List: " + listImages[0] + " " + listImages[1])
+//                        Log.d("kitty", "SnapShot: Last List Size" + listImages.size.toString())
+//                    }
+//                    override fun onCancelled(error: DatabaseError) {
+//                        TODO("Not yet implemented")
+//                    }
+//                })
 
-                database.child("users").child(wow).child("images").setValue(storageRef.child("images/$current.jpg").)
+//                database.child("users").child(wow).child("images").setValue("hi")
             }
-            Log.d("Kitty", "FINAL" + listImages.size.toString())
+//            Log.d("Kitty", "FINAL" + listImages.size.toString())
 //            imageData.add(newImageURL.toString())
 //            Log.d("yaboteee",imageData.size.toString())
         }
