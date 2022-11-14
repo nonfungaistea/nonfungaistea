@@ -23,7 +23,7 @@ class CardViewHolder(
         val httpsReference = storage.getReferenceFromUrl(ImageURL)
         Log.d("kitty", "omsode")
         Log.d("kitty", httpsReference.toString())
-        val ONE_MEGABYTE: Long = 1024 * 1024 * 5
+        val ONE_MEGABYTE: Long = 1024 * 1024 * 10
         val textDef = "Example"
         httpsReference.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
             Log.d("kitty", "YES!")
