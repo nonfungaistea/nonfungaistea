@@ -1,30 +1,61 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory app:title="Testing Settings UI">
+    <PreferenceCategory app:title="Account Settings">
 
         <EditTextPreference
-            app:key="signature"
-            app:title="Edit Text Preference"
+            app:key="nickname"
+            app:title="Edit nickname"
             app:useSimpleSummaryProvider="true" />
 
-        <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="List Preference"
-            app:useSimpleSummaryProvider="true" />
+        <Preference
+            app:summary="Click to update your email"
+            app:title="Update email">
+            <intent
+                android:action="com.example.myapplication.SETTING_START_ACTIVITY"
+                android:targetClass="com.example.myapplication.EmailActivity"
+                android:targetPackage="com.example.myapplication" />
+
+        </Preference>
+
+        <Preference
+            app:summary="Click to change your password"
+            app:title="Change Password">
+            <intent
+                android:action="com.example.myapplication.SETTING_START_ACTIVITY"
+                android:targetClass="com.example.myapplication.PasswordActivity"
+                android:targetPackage="com.example.myapplication" />
+
+        </Preference>
+
+        <Preference
+            app:summary="Click to delete your account"
+            app:title="Delete Account">
+            <intent
+                android:action="com.example.myapplication.SETTING_START_ACTIVITY"
+                android:targetClass="com.example.myapplication.DeleteActivity"
+                android:targetPackage="com.example.myapplication" />
+
+        </Preference>
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Basic Test Settings">
+    <PreferenceCategory app:title="Other">
 
-        <SwitchPreferenceCompat
-            app:key="switch"
-            app:defaultValue="true"
-            app:summary="Click to Switch On and Off"
-            app:title="Switch Preference" />
+        <SwitchPreference
+            app:summary="Switch between dark mode and light mode"
+            app:key="darkmode"
+            app:defaultValue="false"
+            app:title="Dark mode" />
 
+        <Preference
+            app:title="Send feedback"
+            app:summary="Report technical issues or suggest new features">
+            <intent
+                android:action="com.example.myapplication.SETTING_START_ACTIVITY"
+                android:targetClass="com.example.myapplication.FeedbackActivity"
+                android:targetPackage="com.example.myapplication" />
+        </Preference>
 
 
     </PreferenceCategory>
