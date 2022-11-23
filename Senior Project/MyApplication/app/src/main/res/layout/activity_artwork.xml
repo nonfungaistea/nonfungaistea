@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,10 +11,11 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?colorOnPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="?colorOnPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -53,41 +55,38 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/photoCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/sm"
-            android:paddingHorizontal="12sp"
-            app:cardElevation="6sp"
-            app:layout_constraintBottom_toTopOf="@+id/editToolsWrapper"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/appbar"
-            app:layout_constraintVertical_bias="1.0" />
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/photoCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar"
+        app:layout_constraintBottom_toTopOf="@+id/editToolsWrapper"
+        app:layout_constraintVertical_bias="1.0"
+        android:layout_margin="@dimen/sm"
+        android:paddingHorizontal="12sp"
+        app:cardElevation="6sp">
+
 
         <ImageView
             android:id="@+id/photoView"
             android:layout_width="match_parent"
             android:layout_height="610dp"
-            android:adjustViewBounds="true"
+            android:src="@drawable/default_bg"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/default_bg" />
+            android:adjustViewBounds="true"/>
+    </com.google.android.material.card.MaterialCardView>
 
-        <include layout="@layout/paint_view" />
-    </FrameLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/editToolsWrapper"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         app:layout_constraintBottom_toBottomOf="parent"
->
+        app:layout_constraintTop_toBottomOf="@+id/photoCard">
+
         <HorizontalScrollView
             android:id="@+id/toolsLayout"
             android:layout_width="match_parent"
@@ -96,84 +95,77 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:fillViewport="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:fillViewport="true">
 
                 <TextView
                     android:id="@+id/rotateBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/md"
-                    android:drawablePadding="@dimen/md"
                     android:text="Rotate"
-                    app:drawableBottomCompat="@drawable/ic_collage" />
+                    app:drawableBottomCompat="@drawable/ic_collage"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
 
                 <TextView
                     android:id="@+id/filterBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/md"
-                    android:drawablePadding="@dimen/md"
                     android:text="Filter"
-                    app:drawableBottomCompat="@drawable/ic_filter" />
-
+                    app:drawableBottomCompat="@drawable/ic_filter"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
                 <TextView
                     android:id="@+id/brightnessBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/md"
-                    android:drawablePadding="@dimen/md"
                     android:text="Brightness"
-                    app:drawableBottomCompat="@drawable/ic_brightness" />
+                    app:drawableBottomCompat="@drawable/ic_brightness"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
 
                 <TextView
                     android:id="@+id/contrastBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/md"
-                    android:drawablePadding="@dimen/md"
                     android:text="Contrast"
-                    app:drawableBottomCompat="@drawable/ic_contrast" />
+                    app:drawableBottomCompat="@drawable/ic_contrast"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
 
                 <TextView
                     android:id="@+id/addTextBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/md"
-                    android:drawablePadding="@dimen/md"
                     android:text="Text"
-                    app:drawableBottomCompat="@drawable/ic_text" />
+                    app:drawableBottomCompat="@drawable/ic_text"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
 
                 <TextView
                     android:id="@+id/shapeBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/md"
-                    android:drawablePadding="@dimen/md"
                     android:text="Shape"
-                    app:drawableBottomCompat="@drawable/ic_shape" />
+                    app:drawableBottomCompat="@drawable/ic_shape"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
 
                 <TextView
                     android:id="@+id/brushBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/md"
-                    android:drawablePadding="@dimen/md"
                     android:text="Brush"
-                    app:drawableBottomCompat="@drawable/ic_brush" />
+                    app:drawableBottomCompat="@drawable/ic_brush"
+                    android:layout_marginHorizontal="@dimen/md"
+                    android:drawablePadding="@dimen/md"/>
             </LinearLayout>
 
         </HorizontalScrollView>
 
-        <include layout="@layout/brightness" />
-
-        <include layout="@layout/contrast" />
-
-        <include layout="@layout/filters" />
-
-        <include layout="@layout/brush" />
-
-        <include layout="@layout/rotate"/>
+        <include layout="@layout/brightness"/>
+        <include layout="@layout/contrast"/>
+        <include layout="@layout/filters"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

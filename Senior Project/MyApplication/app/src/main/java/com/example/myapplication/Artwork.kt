@@ -21,20 +21,23 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.myapplication.PaintView.Companion.colorList
 import com.example.myapplication.PaintView.Companion.currentBrush
 import com.example.myapplication.PaintView.Companion.pathList
+import android.os.Environment
+import android.util.Log
+import android.view.View
+import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.drawable.toBitmap
 import com.example.myapplication.databinding.ActivityArtworkBinding
 
 
 class Artwork : AppCompatActivity() {
-    companion object{
-        var path = Path()
-        var paintBrush = Paint()
-        var isTouchable = false
-    }
     private lateinit var binding: ActivityArtworkBinding
-    private lateinit var frameLayout: FrameLayout
     //Filters.xml
     private lateinit var filterBtnsLayout: ConstraintLayout
     private lateinit var filterBackBtn: TextView
+    //Filter Btns
     private lateinit var greyBtn: ImageView
     private lateinit var ogPhotobtn: ImageView
     private lateinit var redBtn: ImageView
@@ -68,10 +71,14 @@ class Artwork : AppCompatActivity() {
     private lateinit var rotateCheckBtn: ImageButton
     private lateinit var rotateTrashCanBtn: ImageButton
 
-
     private lateinit var ogBmp: BitmapDrawable
-
-
+    
+    //saveArt
+    private lateinit var saveButton:Button
+    private lateinit var ogbmp: BitmapDrawable
+    private lateinit var editImage: ImageView
+    private lateinit var stream: InputStream
+    private var uri:Uri? = null
     private lateinit var filtered: String
     var filteredBmp: Bitmap? = null
 
@@ -83,7 +90,6 @@ class Artwork : AppCompatActivity() {
         ogBmp = binding.photoView.drawable as BitmapDrawable
         onClick()
     }
-
 
 
     private fun onClick(){
@@ -99,6 +105,57 @@ class Artwork : AppCompatActivity() {
             rotateLayout.visibility = View.GONE
             binding.toolsLayout.visibility = View.VISIBLE
         }
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun saveFile() {
+            var storage: FirebaseStorage = FirebaseStorage.getInstance()
+            val storageRef: StorageReference = storage.reference
+            val current = LocalDateTime.now()
+
+            val spaceRef = storageRef.child("images/$current.jpg")
+            val bitmap: Bitmap = binding.photoView.drawable.toBitmap()
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+            var uploadTask = spaceRef.putBytes(data)
+            uploadTask.addOnFailureListener{
+
+            }.addOnSuccessListener {
+                //taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+
+
+                val currentUser: FirebaseUser? = Firebase.auth.currentUser
+
+                if(currentUser == null){
+                    Toast.makeText(this, "No Acc", Toast.LENGTH_SHORT).show()
+                } else{
+                    listImages.clear()
+                    val wow = currentUser.uid
+                    val database = Firebase.database.reference
+                    val databaseReferencee = database.child("users").child(wow).child("images")
+                    val key = databaseReferencee.push().key
+                    Log.d("kitty", "$databaseReferencee/$key")
+                    Log.d("kitty", "$key")
+                    if (key == null){
+                        Log.d("kitty", "Couldn't get push key for posts")
+                        return@addOnSuccessListener
+                    }
+                    lateinit var newImageUrll: String
+                    storageRef.child("images/$current.jpg").downloadUrl.addOnSuccessListener(OnSuccessListener<Uri?> { urie ->
+                        newImageUrll = urie.toString()
+                        Log.d("kitty", urie.toString())
+                        val childUpdates = hashMapOf<String, Any>(
+                            "users/$wow/images/$key" to newImageUrll
+                        )
+                        val checkerr = database.updateChildren(childUpdates)
+                        checkerr.addOnFailureListener{
+                            Log.d("kitty", "worksNOT")
+                        }.addOnSuccessListener {
+                            Log.d("kitty", "works?")
+                            this.startActivity(Intent(this, DashboardActivity::class.java))
+                        }
+                    })
+                }
+            }
         //Filters
         filterBackBtn = findViewById(R.id.filterBackBtn)
         filterBtnsLayout = findViewById(R.id.filterBtnsLayout)
@@ -127,19 +184,6 @@ class Artwork : AppCompatActivity() {
         }
         //----------------------
 
-        //Brush
-        brushLayout = findViewById(R.id.brushLayout)
-        brushCheckBtn = findViewById(R.id.checkBrushBtn)
-        binding.brushBtn.setOnClickListener {
-            brushLayout.visibility = View.VISIBLE
-            binding.toolsLayout.visibility = View.GONE
-        }
-        brushCheckBtn.setOnClickListener{
-            brushLayout.visibility = View.GONE
-            binding.toolsLayout.visibility = View.VISIBLE
-            isTouchable = false
-        }
-
         //Contrast
         contrastSeekBar = findViewById(R.id.contrastSeekBar)
         contrastSeekBarLayout = findViewById(R.id.contrastSeekBarLayout)
@@ -152,7 +196,7 @@ class Artwork : AppCompatActivity() {
             contrastSeekBarLayout.visibility = View.GONE
             binding.toolsLayout.visibility = View.VISIBLE
         }
-        //----------------------
+      //----------------------
         //Rotate functionality
         rotateImage()
         //Filters
@@ -161,29 +205,31 @@ class Artwork : AppCompatActivity() {
         seekBarListeners()
         brush()
     }
+    private fun getData() {
+        val currentUser: FirebaseUser? = Firebase.auth.currentUser
 
-    private fun rotateImage() {
-        var rotate = 0F
-        rotateLeftBtn = findViewById(R.id.rotateLeftBtn)
-        rotateRightBtn = findViewById(R.id.rotateRightBtn)
-        rotateTrashCanBtn = findViewById(R.id.deleteRotateBtn)
-
-        rotateLeftBtn.setOnClickListener {
-            rotate -= 10F
-            frameLayout.animate().rotation(rotate)
+        if(currentUser == null){
+            Toast.makeText(this, "No Acc", Toast.LENGTH_SHORT).show()
+        } else{
+            listImages.clear()
+            Log.d("kitty", "inside")
+            val wow = currentUser.uid
+            val database = Firebase.database.reference
+            val databaseReferencee = database.child("users").child(wow).child("images")
+            databaseReferencee.addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d("kitty", "insideR...")
+                    for (ds in snapshot.children){
+                        listImages.add(ds.value.toString())
+                    }
+                    Log.d("kitty", "Aggregated Total Still in Func" + listImages.size.toString())
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
         }
-        rotateRightBtn.setOnClickListener {
-            rotate += 10F
-            frameLayout.animate().rotation(rotate)
-        }
-
-        rotateTrashCanBtn.setOnClickListener {
-            rotate = 0F
-            frameLayout.animate().rotation(rotate)
-        }
-
     }
-
     private fun brush() {
         redBrushBtn = findViewById(R.id.redBrushBtn)
         blueBrushBtn = findViewById(R.id.blueBrushBtn)
@@ -217,10 +263,6 @@ class Artwork : AppCompatActivity() {
         currentBrush = color
         path = Path()
     }
-
-
-
-
     private fun seekBarListeners() {
         //brightnessSeekBar Listener
         brightnessSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
@@ -238,8 +280,6 @@ class Artwork : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-
-
 
     }
 
