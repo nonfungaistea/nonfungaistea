@@ -23,7 +23,6 @@ import com.example.myapplication.PaintView.Companion.currentBrush
 import com.example.myapplication.PaintView.Companion.pathList
 import com.example.myapplication.databinding.ActivityArtworkBinding
 
-
 class Artwork : AppCompatActivity() {
     companion object{
         var path = Path()
@@ -68,9 +67,7 @@ class Artwork : AppCompatActivity() {
     private lateinit var rotateCheckBtn: ImageButton
     private lateinit var rotateTrashCanBtn: ImageButton
 
-
     private lateinit var ogBmp: BitmapDrawable
-
 
     private lateinit var filtered: String
     var filteredBmp: Bitmap? = null
@@ -176,12 +173,10 @@ class Artwork : AppCompatActivity() {
             rotate += 10F
             frameLayout.animate().rotation(rotate)
         }
-
         rotateTrashCanBtn.setOnClickListener {
             rotate = 0F
             frameLayout.animate().rotation(rotate)
         }
-
     }
 
     private fun brush() {
@@ -217,9 +212,6 @@ class Artwork : AppCompatActivity() {
         currentBrush = color
         path = Path()
     }
-
-
-
 
     private fun seekBarListeners() {
         //brightnessSeekBar Listener
@@ -279,11 +271,9 @@ class Artwork : AppCompatActivity() {
         val paint = Paint()
         val colorFilter = LightingColorFilter(mul, add)
         paint.colorFilter = colorFilter
-
         val canvas = Canvas(outputBitmap)
         canvas.drawBitmap(outputBitmap, 0F, 0F, paint)
         binding.photoView.setImageBitmap(outputBitmap)
-
     }
 
     private fun filters() {
@@ -344,15 +334,7 @@ class Artwork : AppCompatActivity() {
         invertBtn = findViewById(R.id.invertBtn)
         filterBtn(invertBtn, Filter.invert)
         invertBtn.setOnClickListener {filter(Filter.invert)}
-
-
     }
-
-
-
-
-
-
     private fun filter(filter: String){
         //create a bitmap from our original bitmap drawable
         val bmp = ogBmp.bitmap
