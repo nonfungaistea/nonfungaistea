@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/search"
+        android:enabled="true"
+        android:icon="@drawable/ic_search"
+        android:title="@string/Search" />
+    <item
+        android:id="@+id/files"
+        android:enabled="true"
+        android:icon="@drawable/ic_folder"
+        android:title="@string/Files" />
+    <item
+        android:id="@+id/images"
+        android:enabled="true"
+        android:icon="@drawable/ic_image"
+        android:title="@string/images" />
+    <item
+        android:id="@+id/wallet"
+        android:enabled="true"
+        android:icon="@drawable/ic_wallet"
+        android:title="@string/wallet" />
+    <item
+        android:id="@+id/settings"
+        android:enabled="true"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
+
+</menu>
