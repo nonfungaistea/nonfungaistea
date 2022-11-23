@@ -2,28 +2,21 @@ package com.example.myapplication
 
 
 import android.content.Intent
-import android.content.SharedPreferences
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
+
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mAuth: FirebaseAuth
-//    var NightMode = 0
-//    lateinit var sharedPreferences: SharedPreferences
-//    lateinit var editor: SharedPreferences.Editor
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        sharedPreferences = getSharedPreferences("SharedPrefs", MODE_PRIVATE);
-//        NightMode = sharedPreferences.getInt("NightModeInt", 1);
-//        AppCompatDelegate.setDefaultNightMode(NightMode);
+       // setContentView(R.layout.activity_main)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         mAuth = FirebaseAuth.getInstance()
@@ -81,23 +74,11 @@ class MainActivity : AppCompatActivity() {
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener{
             if (it.isSuccessful){
-                val extras = Bundle()
-                val intent = Intent(this, DashboardActivity::class.java)
-                intent.putExtras(extras)
-                startActivity(intent)
+                this.startActivity(Intent(this, Artwork::class.java))
             }else{
                 Toast.makeText(this, "Failed to login. Verify credentials.", Toast.LENGTH_LONG).show()
             }
         }
-
     }
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        NightMode = AppCompatDelegate.getDefaultNightMode()
-//        sharedPreferences = getSharedPreferences("SharedPrefs", MODE_PRIVATE)
-//        editor = sharedPreferences.edit()
-//        editor.putInt("NightModeInt", NightMode)
-//        editor.apply()
-//    }
 
 }

@@ -3,10 +3,24 @@ package com.example.myapplication
 import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.os.Build
+import android.media.Image
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore.Images
+import android.view.Menu
+import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.SeekBar
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.myapplication.PaintView.Companion.colorList
+import com.example.myapplication.PaintView.Companion.currentBrush
+import com.example.myapplication.PaintView.Companion.pathList
 import android.os.Environment
 import android.util.Log
 import android.view.View
@@ -16,21 +30,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.drawable.toBitmap
 import com.example.myapplication.databinding.ActivityArtworkBinding
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
-import java.io.InputStream
-import java.time.LocalDateTime
 
 
 class Artwork : AppCompatActivity() {
@@ -58,6 +57,22 @@ class Artwork : AppCompatActivity() {
     private lateinit var contrastSeekBarLayout: ConstraintLayout
     private lateinit var contrastSeekbarOkView: TextView
     private lateinit var contrastSeekBar: SeekBar
+    //Brush.xml
+    private lateinit var brushLayout: RelativeLayout
+    private lateinit var redBrushBtn: ImageButton
+    private lateinit var blueBrushBtn: ImageButton
+    private lateinit var greenBrushBtn: ImageButton
+    private lateinit var trashCanBtn: ImageButton
+    private lateinit var brushCheckBtn: ImageButton
+    //Rotate.xml
+    private lateinit var rotateLayout: RelativeLayout
+    private lateinit var rotateLeftBtn: ImageButton
+    private lateinit var rotateRightBtn: ImageButton
+    private lateinit var rotateCheckBtn: ImageButton
+    private lateinit var rotateTrashCanBtn: ImageButton
+
+    private lateinit var ogBmp: BitmapDrawable
+    
     //saveArt
     private lateinit var saveButton:Button
     private lateinit var ogbmp: BitmapDrawable
@@ -66,204 +81,81 @@ class Artwork : AppCompatActivity() {
     private var uri:Uri? = null
     private lateinit var filtered: String
     var filteredBmp: Bitmap? = null
-    val listImages: MutableList<String> = mutableListOf()
 
-    private lateinit var image:ImageView
-    //val path = File("res/drawable/default_bg.webp")
-//    val extras = intent.extras
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val intent = intent
-        val imageString = intent.getStringExtra("KEY")
-        val emailString = intent.getStringExtra("EKEY")
-        uri = Uri.parse(imageString)
         binding = ActivityArtworkBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        stream = uri?.let { contentResolver.openInputStream(it) }!!
-        val inputStream = contentResolver.openInputStream(uri!!)
-        ogbmp = Drawable.createFromStream(inputStream, imageString) as BitmapDrawable
-
-        //ogBmp = uri as BitmapDrawable
-
-        editImage=findViewById(R.id.photoView)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.greyBtn)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.ogBtn)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.redBtn)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.blueBtn)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.greenBtn)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.redGreenBtn)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.redBlueBtn)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.greenBlueBtn)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.sepiaBtn)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.binaryBtn)
-        editImage.setImageDrawable(ogbmp)
-        editImage=findViewById(R.id.invertBtn)
-        editImage.setImageDrawable(ogbmp)
+        ogBmp = binding.photoView.drawable as BitmapDrawable
         onClick()
-        //save to gallery
-        saveButton = findViewById(R.id.saveBtn)
-        saveButton.setOnClickListener {
-            saveFile()
-        }
     }
 
 
-
-//    fun getArtwork(){
-//        ogBmp =
-//    }
-
-//    fun getExtra(){
-//
-//        if (extras != null && extras.containsKey("KEY")) {
-//            uri= Uri.parse(extras.getString("KEY"));
-//        }
-//    }
-
-    fun bitmapToFile(bitmap: Bitmap, fileNameToSave: String): File? { // File name like "image.png"
-        //create a file to write bitmap data
-        var file: File? = null
-        return try {
-            file = File(Environment.getExternalStorageDirectory().toString() + File.separator + fileNameToSave)
-            file.createNewFile()
-
-            //Convert bitmap to byte array
-            val bos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
-            val bitmapdata = bos.toByteArray()
-
-            //write the bytes in file
-            val fos = FileOutputStream(file)
-            fos.write(bitmapdata)
-            fos.flush()
-            fos.close()
-            file
-        } catch (e: Exception) {
-            e.printStackTrace()
-            file // it will return null
+    private fun onClick(){
+        //Rotate
+        frameLayout = findViewById(R.id.frameLayout)
+        rotateLayout = findViewById(R.id.rotateLayout)
+        rotateCheckBtn = findViewById(R.id.checkRotateBtn)
+        binding.rotateBtn.setOnClickListener {
+            rotateLayout.visibility = View.VISIBLE
+            binding.toolsLayout.visibility = View.GONE
         }
-    }
+        rotateCheckBtn.setOnClickListener {
+            rotateLayout.visibility = View.GONE
+            binding.toolsLayout.visibility = View.VISIBLE
+        }
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun saveFile() {
+            var storage: FirebaseStorage = FirebaseStorage.getInstance()
+            val storageRef: StorageReference = storage.reference
+            val current = LocalDateTime.now()
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun saveFile() {
-        var storage: FirebaseStorage = FirebaseStorage.getInstance()
-        val storageRef: StorageReference = storage.reference
-        val current = LocalDateTime.now()
+            val spaceRef = storageRef.child("images/$current.jpg")
+            val bitmap: Bitmap = binding.photoView.drawable.toBitmap()
+            val baos = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+            var uploadTask = spaceRef.putBytes(data)
+            uploadTask.addOnFailureListener{
 
-        val spaceRef = storageRef.child("images/$current.jpg")
-        val bitmap: Bitmap = binding.photoView.drawable.toBitmap()
-        val baos = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val data = baos.toByteArray()
-        var uploadTask = spaceRef.putBytes(data)
-        uploadTask.addOnFailureListener{
-
-        }.addOnSuccessListener {
-            //taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+            }.addOnSuccessListener {
+                //taskSnapshot.metadata contains file metadata such as size, content-type, etc.
 
 
-            val currentUser: FirebaseUser? = Firebase.auth.currentUser
+                val currentUser: FirebaseUser? = Firebase.auth.currentUser
 
-            if(currentUser == null){
-                Toast.makeText(this, "No Acc", Toast.LENGTH_SHORT).show()
-            } else{
-                listImages.clear()
-                val wow = currentUser.uid
-                val database = Firebase.database.reference
-                val databaseReferencee = database.child("users").child(wow).child("images")
-                val key = databaseReferencee.push().key
-                Log.d("kitty", "$databaseReferencee/$key")
-                Log.d("kitty", "$key")
-                if (key == null){
-                    Log.d("kitty", "Couldn't get push key for posts")
-                    return@addOnSuccessListener
-                }
-                lateinit var newImageUrll: String
-                storageRef.child("images/$current.jpg").downloadUrl.addOnSuccessListener(OnSuccessListener<Uri?> { urie ->
-                    newImageUrll = urie.toString()
-                    Log.d("kitty", urie.toString())
-                    val childUpdates = hashMapOf<String, Any>(
-                        "users/$wow/images/$key" to newImageUrll
-                    )
-                    val checkerr = database.updateChildren(childUpdates)
-                    checkerr.addOnFailureListener{
-                        Log.d("kitty", "worksNOT")
-                    }.addOnSuccessListener {
-                        Log.d("kitty", "works?")
-                        this.startActivity(Intent(this, DashboardActivity::class.java))
+                if(currentUser == null){
+                    Toast.makeText(this, "No Acc", Toast.LENGTH_SHORT).show()
+                } else{
+                    listImages.clear()
+                    val wow = currentUser.uid
+                    val database = Firebase.database.reference
+                    val databaseReferencee = database.child("users").child(wow).child("images")
+                    val key = databaseReferencee.push().key
+                    Log.d("kitty", "$databaseReferencee/$key")
+                    Log.d("kitty", "$key")
+                    if (key == null){
+                        Log.d("kitty", "Couldn't get push key for posts")
+                        return@addOnSuccessListener
                     }
-                })
-//                val check = databaseReferencee.get()
-//                databaseReferencee.addValueEventListener(object: ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        Log.d("kitty", "SnapShot: First List Size" + listImages.size.toString())
-//                        Log.d("kitty", "New Snapshot...")
-//                        for (ds in snapshot.children){
-//                            Log.d("kitty", "DSVALUE" + ds.value.toString())
-//                            listImages.add(ds.value.toString())
-//                        }
-//                        Log.d("kitty", "SnapShot: Middle List Size" + listImages.size.toString())
-//                        val newImageURL = storageRef.child("images/$current.jpg").downloadUrl
-////                        Log.d("Kitty", "URL " + newImageURL.toString())
-//                        listImages.add(newImageURL.toString())
-//                        Log.d("Kitty", "Image List: " + listImages[0] + " " + listImages[1])
-//                        Log.d("kitty", "SnapShot: Last List Size" + listImages.size.toString())
-//                    }
-//                    override fun onCancelled(error: DatabaseError) {
-//                        TODO("Not yet implemented")
-//                    }
-//                })
-
-//                database.child("users").child(wow).child("images").setValue("hi")
+                    lateinit var newImageUrll: String
+                    storageRef.child("images/$current.jpg").downloadUrl.addOnSuccessListener(OnSuccessListener<Uri?> { urie ->
+                        newImageUrll = urie.toString()
+                        Log.d("kitty", urie.toString())
+                        val childUpdates = hashMapOf<String, Any>(
+                            "users/$wow/images/$key" to newImageUrll
+                        )
+                        val checkerr = database.updateChildren(childUpdates)
+                        checkerr.addOnFailureListener{
+                            Log.d("kitty", "worksNOT")
+                        }.addOnSuccessListener {
+                            Log.d("kitty", "works?")
+                            this.startActivity(Intent(this, DashboardActivity::class.java))
+                        }
+                    })
+                }
             }
-//            Log.d("Kitty", "FINAL" + listImages.size.toString())
-//            imageData.add(newImageURL.toString())
-//            Log.d("yaboteee",imageData.size.toString())
-        }
-
-    }
-    private fun getData() {
-        val currentUser: FirebaseUser? = Firebase.auth.currentUser
-
-        if(currentUser == null){
-            Toast.makeText(this, "No Acc", Toast.LENGTH_SHORT).show()
-        } else{
-            listImages.clear()
-            Log.d("kitty", "inside")
-            val wow = currentUser.uid
-            val database = Firebase.database.reference
-            val databaseReferencee = database.child("users").child(wow).child("images")
-            databaseReferencee.addValueEventListener(object: ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("kitty", "insideR...")
-                    for (ds in snapshot.children){
-                        listImages.add(ds.value.toString())
-                    }
-                    Log.d("kitty", "Aggregated Total Still in Func" + listImages.size.toString())
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
-        }
-    }
-    private fun onClick() {
-
-        binding.rotateBtn.setOnClickListener{
-            //binding.toolsLayout.visibility = View.GONE
-        }
-
         //Filters
         filterBackBtn = findViewById(R.id.filterBackBtn)
         filterBtnsLayout = findViewById(R.id.filterBtnsLayout)
@@ -304,18 +196,73 @@ class Artwork : AppCompatActivity() {
             contrastSeekBarLayout.visibility = View.GONE
             binding.toolsLayout.visibility = View.VISIBLE
         }
-        //----------------------
-
+      //----------------------
+        //Rotate functionality
+        rotateImage()
         //Filters
         filters()
-
         //seek bar listener (brightness and contrast)
         seekBarListeners()
+        brush()
+    }
+    private fun getData() {
+        val currentUser: FirebaseUser? = Firebase.auth.currentUser
 
+        if(currentUser == null){
+            Toast.makeText(this, "No Acc", Toast.LENGTH_SHORT).show()
+        } else{
+            listImages.clear()
+            Log.d("kitty", "inside")
+            val wow = currentUser.uid
+            val database = Firebase.database.reference
+            val databaseReferencee = database.child("users").child(wow).child("images")
+            databaseReferencee.addValueEventListener(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d("kitty", "insideR...")
+                    for (ds in snapshot.children){
+                        listImages.add(ds.value.toString())
+                    }
+                    Log.d("kitty", "Aggregated Total Still in Func" + listImages.size.toString())
+                }
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+        }
+    }
+    private fun brush() {
+        redBrushBtn = findViewById(R.id.redBrushBtn)
+        blueBrushBtn = findViewById(R.id.blueBrushBtn)
+        greenBrushBtn = findViewById(R.id.greenBrushBtn)
+        trashCanBtn = findViewById(R.id.deleteBrushBtn)
 
-
+        redBrushBtn.setOnClickListener {
+            isTouchable = true
+            paintBrush.color = Color.RED
+            currentColor(paintBrush.color)
+        }
+        blueBrushBtn.setOnClickListener {
+            isTouchable = true
+            paintBrush.color = Color.BLUE
+            currentColor(paintBrush.color)
+        }
+        greenBrushBtn.setOnClickListener {
+            isTouchable = true
+            paintBrush.color = Color.GREEN
+            currentColor(paintBrush.color)
+        }
+        trashCanBtn.setOnClickListener {
+            isTouchable = false
+            pathList.clear()
+            colorList.clear()
+            path.reset()
+        }
     }
 
+    private fun currentColor(color: Int){
+        currentBrush = color
+        path = Path()
+    }
     private fun seekBarListeners() {
         //brightnessSeekBar Listener
         brightnessSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
@@ -334,13 +281,11 @@ class Artwork : AppCompatActivity() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
 
-
-
     }
 
     private fun adjustContrast(value: Int) {
         // btimap from original bitmap drawable
-        var bmp = ogbmp.bitmap
+        var bmp = ogBmp.bitmap
         if (filteredBmp != null)
             bmp = filteredBmp
         //define a mull
@@ -361,7 +306,7 @@ class Artwork : AppCompatActivity() {
 
     private fun adjustBrightness(value: Int) {
         //Bitmap from original bitmap drawable
-        var bmp = ogbmp.bitmap
+        var bmp = ogBmp.bitmap
         if (filteredBmp != null){
             bmp = filteredBmp
         }
@@ -396,7 +341,7 @@ class Artwork : AppCompatActivity() {
             filteredBmp = null
             filtered = null.toString()
 
-            binding.photoView.setImageDrawable((ogbmp))
+            binding.photoView.setImageDrawable((ogBmp))
             brightnessSeekBar.progress = 0
             contrastSeekBar.progress = 255
         }
@@ -450,7 +395,7 @@ class Artwork : AppCompatActivity() {
 
     private fun filter(filter: String){
         //create a bitmap from our original bitmap drawable
-        val bmp = ogbmp.bitmap
+        val bmp = ogBmp.bitmap
         //Generate an output bitmap from the above bitmap
         val outputBitmap = Bitmap.createScaledBitmap(bmp, bmp.width, bmp.height, false).copy(Bitmap.Config.ARGB_8888, true)
         //Define a paint for styling and coloring the bitmap
