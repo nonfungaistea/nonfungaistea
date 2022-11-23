@@ -7,6 +7,21 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore.Images
+import android.view.Menu
+import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.View
+import android.widget.FrameLayout
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.SeekBar
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.example.myapplication.PaintView.Companion.colorList
+import com.example.myapplication.PaintView.Companion.currentBrush
+import com.example.myapplication.PaintView.Companion.pathList
 import android.os.Environment
 import android.util.Log
 import android.view.View
@@ -34,11 +49,16 @@ import java.time.LocalDateTime
 
 
 class Artwork : AppCompatActivity() {
+    companion object{
+        var path = Path()
+        var paintBrush = Paint()
+        var isTouchable = false
+    }
     private lateinit var binding: ActivityArtworkBinding
+    private lateinit var frameLayout: FrameLayout
     //Filters.xml
     private lateinit var filterBtnsLayout: ConstraintLayout
     private lateinit var filterBackBtn: TextView
-    //Filter Btns
     private lateinit var greyBtn: ImageView
     private lateinit var ogPhotobtn: ImageView
     private lateinit var redBtn: ImageView
@@ -58,6 +78,20 @@ class Artwork : AppCompatActivity() {
     private lateinit var contrastSeekBarLayout: ConstraintLayout
     private lateinit var contrastSeekbarOkView: TextView
     private lateinit var contrastSeekBar: SeekBar
+    //Brush.xml
+    private lateinit var brushLayout: RelativeLayout
+    private lateinit var redBrushBtn: ImageButton
+    private lateinit var blueBrushBtn: ImageButton
+    private lateinit var greenBrushBtn: ImageButton
+    private lateinit var trashCanBtn: ImageButton
+    private lateinit var brushCheckBtn: ImageButton
+    //Rotate.xml
+    private lateinit var rotateLayout: RelativeLayout
+    private lateinit var rotateLeftBtn: ImageButton
+    private lateinit var rotateRightBtn: ImageButton
+    private lateinit var rotateCheckBtn: ImageButton
+    private lateinit var rotateTrashCanBtn: ImageButton
+    private lateinit var ogBmp: BitmapDrawable
     //saveArt
     private lateinit var saveButton:Button
     private lateinit var ogbmp: BitmapDrawable
@@ -117,9 +151,18 @@ class Artwork : AppCompatActivity() {
             saveFile()
         }
     }
-
-
-
+    private fun onClick(){
+        //Rotate
+        frameLayout = findViewById(R.id.frameLayout)
+        rotateLayout = findViewById(R.id.rotateLayout)
+        rotateCheckBtn = findViewById(R.id.checkRotateBtn)
+        binding.rotateBtn.setOnClickListener {
+            rotateLayout.visibility = View.VISIBLE
+            binding.toolsLayout.visibility = View.GONE
+        }
+        rotateCheckBtn.setOnClickListener {
+            rotateLayout.visibility = View.GONE
+            binding.toolsLayout.visibility = View.VISIBLE
 //    fun getArtwork(){
 //        ogBmp =
 //    }
@@ -263,7 +306,6 @@ class Artwork : AppCompatActivity() {
         binding.rotateBtn.setOnClickListener{
             //binding.toolsLayout.visibility = View.GONE
         }
-
         //Filters
         filterBackBtn = findViewById(R.id.filterBackBtn)
         filterBtnsLayout = findViewById(R.id.filterBtnsLayout)
@@ -292,6 +334,19 @@ class Artwork : AppCompatActivity() {
         }
         //----------------------
 
+        //Brush
+        brushLayout = findViewById(R.id.brushLayout)
+        brushCheckBtn = findViewById(R.id.checkBrushBtn)
+        binding.brushBtn.setOnClickListener {
+            brushLayout.visibility = View.VISIBLE
+            binding.toolsLayout.visibility = View.GONE
+        }
+        brushCheckBtn.setOnClickListener{
+            brushLayout.visibility = View.GONE
+            binding.toolsLayout.visibility = View.VISIBLE
+            isTouchable = false
+        }
+
         //Contrast
         contrastSeekBar = findViewById(R.id.contrastSeekBar)
         contrastSeekBarLayout = findViewById(R.id.contrastSeekBarLayout)
@@ -305,16 +360,71 @@ class Artwork : AppCompatActivity() {
             binding.toolsLayout.visibility = View.VISIBLE
         }
         //----------------------
-
+        //Rotate functionality
+        rotateImage()
         //Filters
         filters()
-
         //seek bar listener (brightness and contrast)
         seekBarListeners()
+        brush()
+    }
 
+    private fun rotateImage() {
+        var rotate = 0F
+        rotateLeftBtn = findViewById(R.id.rotateLeftBtn)
+        rotateRightBtn = findViewById(R.id.rotateRightBtn)
+        rotateTrashCanBtn = findViewById(R.id.deleteRotateBtn)
 
+        rotateLeftBtn.setOnClickListener {
+            rotate -= 10F
+            frameLayout.animate().rotation(rotate)
+        }
+        rotateRightBtn.setOnClickListener {
+            rotate += 10F
+            frameLayout.animate().rotation(rotate)
+        }
+
+        rotateTrashCanBtn.setOnClickListener {
+            rotate = 0F
+            frameLayout.animate().rotation(rotate)
+        }
 
     }
+
+    private fun brush() {
+        redBrushBtn = findViewById(R.id.redBrushBtn)
+        blueBrushBtn = findViewById(R.id.blueBrushBtn)
+        greenBrushBtn = findViewById(R.id.greenBrushBtn)
+        trashCanBtn = findViewById(R.id.deleteBrushBtn)
+
+        redBrushBtn.setOnClickListener {
+            isTouchable = true
+            paintBrush.color = Color.RED
+            currentColor(paintBrush.color)
+        }
+        blueBrushBtn.setOnClickListener {
+            isTouchable = true
+            paintBrush.color = Color.BLUE
+            currentColor(paintBrush.color)
+        }
+        greenBrushBtn.setOnClickListener {
+            isTouchable = true
+            paintBrush.color = Color.GREEN
+            currentColor(paintBrush.color)
+        }
+        trashCanBtn.setOnClickListener {
+            isTouchable = false
+            pathList.clear()
+            colorList.clear()
+            path.reset()
+        }
+    }
+
+    private fun currentColor(color: Int){
+        currentBrush = color
+        path = Path()
+    }
+
 
     private fun seekBarListeners() {
         //brightnessSeekBar Listener
@@ -333,9 +443,6 @@ class Artwork : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-
-
-
     }
 
     private fun adjustContrast(value: Int) {
