@@ -62,30 +62,20 @@ class Artwork : AppCompatActivity() {
     private lateinit var saveButton:Button
     private lateinit var ogbmp: BitmapDrawable
     private lateinit var editImage: ImageView
-    private lateinit var stream: InputStream
     private var uri:Uri? = null
     private lateinit var filtered: String
     var filteredBmp: Bitmap? = null
     val listImages: MutableList<String> = mutableListOf()
-
-    private lateinit var image:ImageView
-    //val path = File("res/drawable/default_bg.webp")
-//    val extras = intent.extras
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val intent = intent
         val imageString = intent.getStringExtra("KEY")
-        val emailString = intent.getStringExtra("EKEY")
         uri = Uri.parse(imageString)
         binding = ActivityArtworkBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        stream = uri?.let { contentResolver.openInputStream(it) }!!
         val inputStream = contentResolver.openInputStream(uri!!)
         ogbmp = Drawable.createFromStream(inputStream, imageString) as BitmapDrawable
-
-        //ogBmp = uri as BitmapDrawable
-
         editImage=findViewById(R.id.photoView)
         editImage.setImageDrawable(ogbmp)
         editImage=findViewById(R.id.greyBtn)
@@ -117,50 +107,11 @@ class Artwork : AppCompatActivity() {
             saveFile()
         }
     }
-
-
-
-//    fun getArtwork(){
-//        ogBmp =
-//    }
-
-//    fun getExtra(){
-//
-//        if (extras != null && extras.containsKey("KEY")) {
-//            uri= Uri.parse(extras.getString("KEY"));
-//        }
-//    }
-
-    fun bitmapToFile(bitmap: Bitmap, fileNameToSave: String): File? { // File name like "image.png"
-        //create a file to write bitmap data
-        var file: File? = null
-        return try {
-            file = File(Environment.getExternalStorageDirectory().toString() + File.separator + fileNameToSave)
-            file.createNewFile()
-
-            //Convert bitmap to byte array
-            val bos = ByteArrayOutputStream()
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0, bos) // YOU can also save it in JPEG
-            val bitmapdata = bos.toByteArray()
-
-            //write the bytes in file
-            val fos = FileOutputStream(file)
-            fos.write(bitmapdata)
-            fos.flush()
-            fos.close()
-            file
-        } catch (e: Exception) {
-            e.printStackTrace()
-            file // it will return null
-        }
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveFile() {
         var storage: FirebaseStorage = FirebaseStorage.getInstance()
         val storageRef: StorageReference = storage.reference
         val current = LocalDateTime.now()
-
         val spaceRef = storageRef.child("images/$current.jpg")
         val bitmap: Bitmap = binding.photoView.drawable.toBitmap()
         val baos = ByteArrayOutputStream()
@@ -171,10 +122,7 @@ class Artwork : AppCompatActivity() {
 
         }.addOnSuccessListener {
             //taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-
-
             val currentUser: FirebaseUser? = Firebase.auth.currentUser
-
             if(currentUser == null){
                 Toast.makeText(this, "No Acc", Toast.LENGTH_SHORT).show()
             } else{
@@ -204,34 +152,8 @@ class Artwork : AppCompatActivity() {
                         this.startActivity(Intent(this, DashboardActivity::class.java))
                     }
                 })
-//                val check = databaseReferencee.get()
-//                databaseReferencee.addValueEventListener(object: ValueEventListener {
-//                    override fun onDataChange(snapshot: DataSnapshot) {
-//                        Log.d("kitty", "SnapShot: First List Size" + listImages.size.toString())
-//                        Log.d("kitty", "New Snapshot...")
-//                        for (ds in snapshot.children){
-//                            Log.d("kitty", "DSVALUE" + ds.value.toString())
-//                            listImages.add(ds.value.toString())
-//                        }
-//                        Log.d("kitty", "SnapShot: Middle List Size" + listImages.size.toString())
-//                        val newImageURL = storageRef.child("images/$current.jpg").downloadUrl
-////                        Log.d("Kitty", "URL " + newImageURL.toString())
-//                        listImages.add(newImageURL.toString())
-//                        Log.d("Kitty", "Image List: " + listImages[0] + " " + listImages[1])
-//                        Log.d("kitty", "SnapShot: Last List Size" + listImages.size.toString())
-//                    }
-//                    override fun onCancelled(error: DatabaseError) {
-//                        TODO("Not yet implemented")
-//                    }
-//                })
-
-//                database.child("users").child(wow).child("images").setValue("hi")
             }
-//            Log.d("Kitty", "FINAL" + listImages.size.toString())
-//            imageData.add(newImageURL.toString())
-//            Log.d("yaboteee",imageData.size.toString())
         }
-
     }
     private fun getData() {
         val currentUser: FirebaseUser? = Firebase.auth.currentUser
@@ -259,11 +181,8 @@ class Artwork : AppCompatActivity() {
         }
     }
     private fun onClick() {
-
         binding.rotateBtn.setOnClickListener{
-            //binding.toolsLayout.visibility = View.GONE
         }
-
         //Filters
         filterBackBtn = findViewById(R.id.filterBackBtn)
         filterBtnsLayout = findViewById(R.id.filterBtnsLayout)
@@ -312,8 +231,6 @@ class Artwork : AppCompatActivity() {
         //seek bar listener (brightness and contrast)
         seekBarListeners()
 
-
-
     }
 
     private fun seekBarListeners() {
@@ -325,7 +242,6 @@ class Artwork : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?){}
         })
-
         contrastSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 adjustContrast(progress)
@@ -333,8 +249,6 @@ class Artwork : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
-
-
 
     }
 
@@ -440,13 +354,7 @@ class Artwork : AppCompatActivity() {
         filterBtn(invertBtn, Filter.invert)
         invertBtn.setOnClickListener {filter(Filter.invert)}
 
-
     }
-
-
-
-
-
 
     private fun filter(filter: String){
         //create a bitmap from our original bitmap drawable
