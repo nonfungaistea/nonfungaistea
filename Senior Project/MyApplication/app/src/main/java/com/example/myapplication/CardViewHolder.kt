@@ -21,23 +21,24 @@ class CardViewHolder(
         var storage: FirebaseStorage = FirebaseStorage.getInstance()
         val storageRef = storage.reference
         val httpsReference = storage.getReferenceFromUrl(ImageURL)
-        Log.d("kitty", "omsode")
+//        Log.d("kitty", "omsode")
+        val stringRef = httpsReference.toString()
         Log.d("kitty", httpsReference.toString())
         val ONE_MEGABYTE: Long = 1024 * 1024 * 10
         val textDef = "Example"
         httpsReference.getBytes(ONE_MEGABYTE).addOnSuccessListener { bytes ->
-            Log.d("kitty", "YES!")
+//            Log.d("kitty", "YES!")
             val image: Bitmap? =  BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
             cardCellBinding.cover.setImageBitmap(image)
             cardCellBinding.title.text = textDef
             cardCellBinding.author.text = textDef
 
-//            cardCellBinding.cardView.setOnClickListener{
-//                clickListener.onClick(book)
-//            }
+            cardCellBinding.cardView.setOnClickListener{
+                clickListener.onClick(stringRef)
+            }
             // Data for "images/island.jpg" is returned, use this as needed
         }.addOnFailureListener {
-            Log.d("kitty","didnttWork")
+            Log.d("kitty","Didn't Work")
         }
 
     }

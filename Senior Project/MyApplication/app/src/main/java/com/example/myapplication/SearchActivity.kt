@@ -64,10 +64,7 @@ class SearchActivity : AppCompatActivity(), BookClickListener
             })
         }
     }
-    override fun onClick(book: Book)
-    {
-        val intent = Intent(applicationContext, DetailActivity::class.java)
-        intent.putExtra(BOOK_ID_EXTRA, book.id)
-        startActivity(intent)
+    override fun onClick(string: String) {
+        Log.d("kitty", "Book Clicked!"+ string)
     }
 }
