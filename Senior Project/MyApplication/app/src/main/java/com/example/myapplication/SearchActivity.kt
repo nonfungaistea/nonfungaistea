@@ -1,13 +1,12 @@
 package com.example.myapplication
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.myapplication.databinding.ActivityDashboardBinding
 import com.example.myapplication.databinding.ActivitySearchBinding
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
@@ -15,9 +14,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ListResult
+
 
 class SearchActivity : AppCompatActivity(), BookClickListener
 {
+
     val listImages: MutableList<String> = mutableListOf()
     private lateinit var binding: ActivitySearchBinding
     override fun onCreate(savedInstanceState: Bundle?)
@@ -35,6 +38,16 @@ class SearchActivity : AppCompatActivity(), BookClickListener
         } else{
             val wow = currentUser.uid
             val database = Firebase.database.reference
+            val storageReference = FirebaseStorage.getInstance().getReference("images");
+            storageReference.listAll().addOnSuccessListener { listResult ->
+                for (item in listResult.items) {
+                    item.downloadUrl.addOnSuccessListener { uri -> // Do whatever you need here.
+                        Log.w("kitty", "YOYOdownloadUrl:$uri")
+                    }.addOnFailureListener {
+                        // Handle any errors
+                    }
+                }
+            }
             val databaseReferencee = database.child("users").child(wow).child("images")
             var counter = 0
             databaseReferencee.addValueEventListener(object: ValueEventListener {
