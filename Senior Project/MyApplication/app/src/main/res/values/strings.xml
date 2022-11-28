@@ -43,5 +43,7 @@
     <string name="liked_posts">Liked Posts</string>
     <string name="explore_page">Explore Page</string>
     <string name="your_dashboard">Your DashBoard</string>
+    <string name="emaill">EMAIL</string>
+    <string name="todo">TODO</string>
 
 </resources>
