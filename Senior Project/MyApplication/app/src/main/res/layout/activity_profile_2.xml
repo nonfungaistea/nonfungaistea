@@ -37,12 +37,6 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/dog"
                     />
-                <ImageView
-                    app:key="profile_image_key"
-                    android:id="@+id/profile_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/default_profile"/>
 
 
             </androidx.cardview.widget.CardView>

@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import java.util.concurrent.Executors
 
 
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val user = FirebaseAuth.getInstance().currentUser
@@ -27,26 +27,25 @@ class ProfileActivity : AppCompatActivity() {
         val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val prefEditor: SharedPreferences.Editor = pref.edit()
 
-        val imageView = findViewById<ImageView>(R.id.profile_image)
+        val imageView = findViewById<ImageView>(R.id.profile_image2)
         var usernickname = pref.getString("nickname", "(Not Set)")
 
         var profileImageURI = pref.getString("profile_image_key", "")
 
-        setContentView(R.layout.activity_profile)
+        setContentView(R.layout.activity_profile_2)
         val emailtextview = findViewById<TextView>(R.id.emailtv)
         emailtextview.setText(userEmail)
         val nicknametextview = findViewById<TextView>(R.id.nicknametv)
 
-        if (usernickname.equals("")){
+        if (usernickname.equals("")) {
             nicknametextview.setText("Not Set")
         } else {
             nicknametextview.setText(usernickname)
         }
 
 
-
         val back = findViewById<ImageButton>(R.id.backToSettings)
-        back.setOnClickListener { onBackPressed() }
+        back.setOnClickListener { startActivity(Intent(this, DashboardActivity::class.java)) }
 
         val edittext = EditText(this);
 
@@ -54,11 +53,10 @@ class ProfileActivity : AppCompatActivity() {
         builder.setTitle("Enter your new nickname.")
         builder.setCancelable(true)
         builder.setView(edittext)
-        builder.setNeutralButton("Change") {
-                dialog, which ->
+        builder.setNeutralButton("Change") { dialog, which ->
             prefEditor.putString("nickname", edittext.text.toString()).apply()
             usernickname = pref.getString("nickname", "(Not Set)")
-            if (usernickname.equals("")){
+            if (usernickname.equals("")) {
                 nicknametextview.setText("(Not Set)")
             } else {
                 nicknametextview.setText(usernickname)
@@ -72,19 +70,19 @@ class ProfileActivity : AppCompatActivity() {
         val password = findViewById<ImageButton>(R.id.passwordbutton)
         val logout = findViewById<Button>(R.id.logoutbutton)
 
-        changeimage.setOnClickListener{
+        changeimage.setOnClickListener {
             startActivity(Intent(this, ProfileImageActivity::class.java))
         }
-        nickname.setOnClickListener{
+        nickname.setOnClickListener {
             alertDialog.show()
         }
-        email.setOnClickListener{
-           startActivity(Intent(this, EmailActivity::class.java))
+        email.setOnClickListener {
+            startActivity(Intent(this, EmailActivity::class.java))
         }
-        password.setOnClickListener{
+        password.setOnClickListener {
             startActivity(Intent(this, PasswordActivity::class.java))
         }
-        logout.setOnClickListener{
+        logout.setOnClickListener {
             startActivity(Intent(this, LogOutActivity::class.java))
         }
     }
