@@ -105,7 +105,6 @@ class ProfileImageActivity : AppCompatActivity() {
         }else{
             Toast.makeText(this, "Please Upload an Image", Toast.LENGTH_SHORT).show()
         }
-        startActivity(Intent(this, ProfileActivity2::class.java))
     }
 
 }
