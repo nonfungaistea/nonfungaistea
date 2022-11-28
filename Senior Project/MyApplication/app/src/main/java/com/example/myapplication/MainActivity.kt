@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
 
         val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         val dark_mode = pref.getString("pref_key_night", "false")
-        Toast.makeText(this,dark_mode,Toast.LENGTH_LONG).show()
         if (dark_mode.equals("on")) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
