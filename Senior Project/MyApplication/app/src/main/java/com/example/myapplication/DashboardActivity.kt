@@ -38,14 +38,8 @@ class DashboardActivity() : AppCompatActivity(), BookClickListener  {
     val listImages: MutableList<String> = mutableListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //Checks to see if the user is logged in
-        //getData()
-        val intent = intent
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-//        populateBooks()
-//        Log.d("kitty", "SnapShot: First List Size" + listImages.size.toString())
         val mainActivity = this
         val currentUser: FirebaseUser? = Firebase.auth.currentUser
         listImages.clear()
@@ -65,7 +59,7 @@ class DashboardActivity() : AppCompatActivity(), BookClickListener  {
                         if (counter == 0){
 //                            Log.d("kitty", "Should be null")
                         } else {
-//                            Log.d("kitty", "DSVALUE: " + ds.value.toString())
+                            Log.d("zadi", "DSVALUE: " + ds.value.toString())
                             listImages.add(ds.value.toString())
                         }
                         counter += 1
@@ -122,6 +116,11 @@ class DashboardActivity() : AppCompatActivity(), BookClickListener  {
                 startActivity(intent)
                 true
             }
+            R.id.thumbsUp -> {
+                val intent = Intent(this, LikeActivity::class.java)
+                startActivity(intent)
+                true
+            }
             R.id.files -> {
                 Toast.makeText(this, "Files", Toast.LENGTH_SHORT).show()
                 true
@@ -163,8 +162,8 @@ class DashboardActivity() : AppCompatActivity(), BookClickListener  {
         }
     }
 
-    override fun onClick(string: String) {
-        Log.d("kitty", "Book Clicked!" + string)
+    override fun onClick(imageDBLink: String) {
+        Log.d("kitty", "Book Clicked!@!" + imageDBLink)
         val dialogView = layoutInflater.inflate(R.layout.activity_mintpop, null)
         val customDialog = AlertDialog.Builder(this@DashboardActivity)
             .setView(dialogView)
@@ -175,6 +174,15 @@ class DashboardActivity() : AppCompatActivity(), BookClickListener  {
         }
         var buttonLoad: Button = dialogView.findViewById(R.id.mintPicture)
         buttonLoad.setOnClickListener {
+            val currentUser: FirebaseUser? = Firebase.auth.currentUser
+            if(currentUser == null){
+                Toast.makeText(this, "No Acc", Toast.LENGTH_SHORT).show()
+            } else {
+                val wow = currentUser.uid
+                val database = Firebase.database.reference
+                val databaseReferencee = database.child("users").child(wow).child("mintLink")
+                databaseReferencee.setValue(imageDBLink)
+            }
         }
     }
 }

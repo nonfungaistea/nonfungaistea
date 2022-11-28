@@ -37,5 +37,11 @@
     <string name="Search" />
     <string name="images">Images</string>
     <string name="wallet">Wallet</string>
+    <string name="search_posts">Search Posts!</string>
+    <string name="Your_Liked_Posts" />
+    <string name="Explore_Page" />
+    <string name="liked_posts">Liked Posts</string>
+    <string name="explore_page">Explore Page</string>
+    <string name="your_dashboard">Your DashBoard</string>
 
 </resources>

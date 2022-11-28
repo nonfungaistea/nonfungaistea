@@ -4,7 +4,9 @@ data class User(
     var name: String?,
     var email: String?,
     var password: String?,
-    var images: LinkedList<String>
+    var images: LinkedList<String>,
+    var likedImages: LinkedList<String>,
+    var mintLink: String?
 )
 
 

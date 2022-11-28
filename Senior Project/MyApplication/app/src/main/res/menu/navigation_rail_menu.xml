@@ -7,6 +7,11 @@
         android:icon="@drawable/ic_search"
         android:title="@string/Search" />
     <item
+        android:id="@+id/thumbsUp"
+        android:enabled="true"
+        android:icon="@drawable/ic_thumb_up"
+        android:title="@string/Search" />
+    <item
         android:id="@+id/files"
         android:enabled="true"
         android:icon="@drawable/ic_folder"

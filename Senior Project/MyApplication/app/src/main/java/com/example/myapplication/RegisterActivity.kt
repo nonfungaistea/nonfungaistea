@@ -45,7 +45,9 @@ class RegisterActivity : AppCompatActivity() {
         val email = binding.email.text.toString().trim()
         val password = binding.password.text.toString().trim()
         var images: LinkedList<String> = LinkedList()
+        var likedImages: LinkedList<String> = LinkedList()
         images.add("Default")
+        likedImages.add("Default")
         if (fullname.isEmpty()){
             binding.fullName.error = "Full name is required"
             binding.fullName.requestFocus()
@@ -81,7 +83,7 @@ class RegisterActivity : AppCompatActivity() {
                 // If the registration of the user is successfully done
                 if (it.isSuccessful) {
                     // Create a user object
-                    val user = User(fullname, email, password, images)
+                    val user = User(fullname, email, password, images,likedImages,"Null")
                     // Notify the user that he was registered successfully
                     Toast.makeText(this, "User was registered successfully", Toast.LENGTH_LONG).show()
                     // Locates the directory for the new user and adds him below his ID with all of his information

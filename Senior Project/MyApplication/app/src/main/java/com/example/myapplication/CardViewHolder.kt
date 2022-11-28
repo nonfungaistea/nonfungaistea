@@ -34,12 +34,11 @@ class CardViewHolder(
             cardCellBinding.author.text = textDef
 
             cardCellBinding.cardView.setOnClickListener{
-                clickListener.onClick(stringRef)
+                clickListener.onClick(ImageURL)
             }
             // Data for "images/island.jpg" is returned, use this as needed
         }.addOnFailureListener {
             Log.d("kitty","Didn't Work")
         }
-
     }
 }
