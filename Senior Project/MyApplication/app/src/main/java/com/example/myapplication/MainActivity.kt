@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -8,24 +9,27 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.preference.PreferenceManager
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var mAuth: FirebaseAuth
-//    var NightMode = 0
-//    lateinit var sharedPreferences: SharedPreferences
-//    lateinit var editor: SharedPreferences.Editor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        sharedPreferences = getSharedPreferences("SharedPrefs", MODE_PRIVATE);
-//        NightMode = sharedPreferences.getInt("NightModeInt", 1);
-//        AppCompatDelegate.setDefaultNightMode(NightMode);
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val pref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val dark_mode = pref.getString("pref_key_night", "false")
+        Toast.makeText(this,dark_mode,Toast.LENGTH_LONG).show()
+        if (dark_mode.equals("on")) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
         mAuth = FirebaseAuth.getInstance()
         onClick()
     }
