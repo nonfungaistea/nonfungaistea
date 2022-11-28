@@ -16,6 +16,17 @@
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
 
+    <string name="pref_key_night">key_night_mode</string>
+    <string name="pref_night_title">Night mode</string>
+    <string name="pref_night_summary">Select a dark or light theme.</string>
+    <string name="pref_night_dialog">Set Night mode</string>
+    <string name="pref_night_auto">auto</string>
+    <string name="pref_night_on">on</string>
+    <string name="pref_night_off">off</string>
+    <string name="night_mode_auto">Automatic</string>
+    <string name="night_mode_on">Night mode</string>
+    <string name="night_mode_off">Light mode</string>
+
     <!-- Messages Preferences -->
     <string name="nickname_title">Your nickname</string>
     <string name="reply_title">Default reply action</string>
