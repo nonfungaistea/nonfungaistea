@@ -42,11 +42,13 @@
 
     <PreferenceCategory app:title="Other">
 
-        <SwitchPreference
-            app:summary="Switch between dark mode and light mode"
-            app:key="darkmode"
-            app:defaultValue="false"
-            app:title="Dark mode" />
+        <ListPreference
+            android:defaultValue="@string/pref_night_off"
+            android:entries="@array/night_mode"
+            android:entryValues="@array/night_mode_value"
+            app:key="pref_key_night"
+            app:useSimpleSummaryProvider="true"
+            app:title="@string/pref_night_title" />
 
         <Preference
             app:title="Send feedback"
@@ -54,6 +56,15 @@
             <intent
                 android:action="com.example.myapplication.SETTING_START_ACTIVITY"
                 android:targetClass="com.example.myapplication.FeedbackActivity"
+                android:targetPackage="com.example.myapplication" />
+        </Preference>
+
+        <Preference
+            app:title="Logout"
+            app:summary="Log out of your account">
+            <intent
+                android:action="com.example.myapplication.SETTING_START_ACTIVITY"
+                android:targetClass="com.example.myapplication.LogOutActivity"
                 android:targetPackage="com.example.myapplication" />
         </Preference>
 
