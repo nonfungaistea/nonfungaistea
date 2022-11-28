@@ -14,4 +14,5 @@
     <color name="secondary_color">#FF03DAC5</color>
     <color name="secondary_color_variant">#FF018786</color>
     <color name="transparent">#000000</color>
+    <color name="grey">#6D6D6D</color>
 </resources>

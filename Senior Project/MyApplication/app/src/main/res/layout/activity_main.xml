@@ -34,6 +34,9 @@
         android:hint="@string/email"
         android:rotationY="180"
         android:textSize="24sp"
+        android:textColor="@color/grey"
+        android:backgroundTint="@color/grey"
+        android:textColorHint="@color/grey"
         android:inputType="text"/>
 
     <EditText
@@ -44,6 +47,9 @@
         android:hint="@string/password"
         android:rotationY="180"
         android:textSize="24sp"
+        android:textColor="@color/grey"
+        android:textColorHint="@color/grey"
+        android:backgroundTint="@color/grey"
         android:inputType="text" />
 
     <Button
@@ -62,6 +68,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/register"
+        android:textColor="@color/grey"
         android:textStyle ="bold"
         android:rotationY="180"
         android:textSize="20sp"
@@ -72,6 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/forgot_password"
+        android:textColor="@color/grey"
         android:textStyle ="bold"
         android:rotationY="180"
         android:textSize="20sp"
